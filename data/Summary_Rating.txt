@@ -1,0 +1,23 @@
+
+--------------------------
+       names         vals 
+------------------- ------
+      Minimum         93  
+
+      Maximum        982  
+
+       Range         889  
+
+      Median         344  
+
+  First Quartile    247.2 
+
+  Third Quartile    437.2 
+
+Interquartile Range  190  
+
+       Mean         354.9 
+
+Standard Deviation  154.7 
+--------------------------
+
