@@ -31,7 +31,7 @@ descr_stats <- function(col, name) {
   dev.off()
 }
 
-for (i in 1:6) {
+for (i in c(1:6, 11)) {
   col <- data[, i]
   name <- colnames(data)[i]
   descr_stats(col, name)
@@ -48,6 +48,7 @@ qual_descr <- function(col, name) {
   path = paste("images/Barplot_", name, ".png", sep="")
   png(filename=path)
   barplot(table(col), col="light blue", border = "white", main = paste("Frequency for", name))
+  dev.off()
 }
 
 for (i in 7:10) {
@@ -80,9 +81,19 @@ sink()
 #conditional boxplots between Balance and the qualitative variables, that is, 
 #boxplots of Balance conditioned to each of Gender, Ethnicity, Student, and Married.
 library(fields)
-png
-bplot.xy(data$Gender, data$Balance)
 
+cond_boxplot <- function(col, name) {
+  path = paste("images/Conditional_Boxplot_Balance_", name, ".png", sep="")
+  png(filename=path)
+  boxplot(data$Balance ~ col, col="lightblue", main=paste("Boxplot of Balance and", name))
+  dev.off()
+}
+
+for (i in 7:10) {
+  col <- data[, i]
+  name <- colnames(data)[i]
+  cond_boxplot(col, name)
+}
 
 new_data <- model.matrix(Balance ~ ., data=data)
 new_data <- cbind(new_data[ ,-1], Balance = data$Balance)
