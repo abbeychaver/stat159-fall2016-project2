@@ -38,3 +38,12 @@ lasso_coef = predict(lasso_out,type="coefficients",s=best_lambda)[1:12,]
 # Save cross validation output, best lambda, mse, and coefficients to RData file
 save(cv_out, best_lambda, test_mse, lasso_coef, file="data/lasso.RData")
 
+# Write best lambda and mse to a text file
+sink("data/Lasso.txt")
+lasso_coef
+"TestMSE:"
+test_mse
+"Best Lambda:"
+best_lambda
+sink()
+
