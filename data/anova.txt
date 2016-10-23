@@ -1,0 +1,19 @@
+Call:
+   aov(formula = data$Balance ~ data$Gender + data$Student + data$Married + 
+    data$Ethnicity)
+
+Terms:
+                data$Gender data$Student data$Married data$Ethnicity Residuals
+Sum of Squares        38892      5623889        16976          58038  78602117
+Deg. of Freedom           1            1            1              2       394
+
+Residual standard error: 446.6517
+Estimated effects may be unbalanced
+                Df   Sum Sq Mean Sq F value   Pr(>F)    
+data$Gender      1    38892   38892   0.195    0.659    
+data$Student     1  5623889 5623889  28.190 1.84e-07 ***
+data$Married     1    16976   16976   0.085    0.771    
+data$Ethnicity   2    58038   29019   0.145    0.865    
+Residuals      394 78602117  199498                     
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
