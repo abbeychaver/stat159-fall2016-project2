@@ -19,7 +19,7 @@ cv_out = cv.glmnet(train_x, train_y, alpha=1, intercept=FALSE, standardize=FALSE
 best_lambda = cv_out$lambda.min
 
 # Save plot for cross-validation errors in terms of the tuning parameter (lambda)
-png(filename="images/Lasso_CV_plot.png", width = 800, height = 600)
+png(filename="images/Lasso_MSE.png", width = 800, height = 600)
 plot(cv_out)
 dev.off()
 
