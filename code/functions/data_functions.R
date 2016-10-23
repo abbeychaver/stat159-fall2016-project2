@@ -1,4 +1,3 @@
-data <- read.csv("data/Credit.csv", header=TRUE, row.names = 1)
 library(pander)
 library(fields)
 
