@@ -1,0 +1,13 @@
+ [1]  0.0000892808 -0.5985008802  0.9565035184  0.3844850676  0.0531987331 -0.0236201215 -0.0074657455
+ [8] -0.0103883295  0.2784291189 -0.0093158837  0.0160013002  0.0101187979
+[1] "testMSE:"
+[1] 0.04926073
+function(col, name) {
+  sink(paste("data/Summary_", name, ".txt", sep=""))
+  pander(table(col))
+  pander(table(col)/nrow(data))
+  sink()
+  path = paste("images/Barplot_", name, ".png", sep="")
+  png(filename=path)
+  barplot(table(col), col="light blue", border = "white", main = paste("Frequency for", name))
+}
