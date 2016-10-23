@@ -1,5 +1,5 @@
 library(pls)
-training <- read.csv("data/training-credit.csv")
+training <- read.csv("data/datasets/training-credit.csv")
 trainX <- training[, 2:12]
 trainX <- as.matrix(trainX)
 trainY <- training[, 13]
