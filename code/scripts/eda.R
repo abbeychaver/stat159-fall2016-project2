@@ -1,5 +1,5 @@
-load("code/functions/data_functions.R")
-data <- read.csv("data/Credit.csv", header=TRUE, row.names = 1)
+source("code/functions/data_functions.R")
+data <- read.csv("data/datasets/Credit.csv", header=TRUE, row.names = 1)
 library(pander)
 library(fields)
 
@@ -30,8 +30,6 @@ data$Gender <- factor(data$Gender)
 data$Student <- factor(data$Student)
 data$Married <- factor(data$Married)
 data$Ethnicity <- factor(data$Ethnicity)
-
-
 
 # ANOVA between balance and qualitative statistics
 sink("data/anova.txt")

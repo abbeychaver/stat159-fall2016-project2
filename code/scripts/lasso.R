@@ -1,7 +1,7 @@
 library(glmnet)
-scaled_data <- read.csv("data/scaled-credit.csv")[, -1]
-training_data <- read.csv("data/training-credit.csv")[, -1]
-test_data <- read.csv("data/test-credit.csv")[, -1]
+scaled_data <- read.csv("data/datasets/scaled-credit.csv")[, -1]
+training_data <- read.csv("data/datasets/training-credit.csv")[, -1]
+test_data <- read.csv("data/datasets/test-credit.csv")[, -1]
 
 set.seed (1234)
 scaled_x = model.matrix(Balance ~ ., scaled_data)[,-1]
