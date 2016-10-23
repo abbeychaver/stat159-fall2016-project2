@@ -31,9 +31,9 @@ save(pls_fit, comp, mse, coeff, file="data/plsr.RData")
 
 # Write coefficients, best number of components, and mse to a text file
 sink("data/plsr.txt")
-coeff
-"TestMSE:"
+pander(coeff)
+writeLines("\nTest MSE:\n")
 mse
-"Best Number of Components:"
+writeLines("\nBest Number of Components:\n")
 comp
 sink()
