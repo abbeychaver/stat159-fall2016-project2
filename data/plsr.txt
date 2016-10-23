@@ -1,0 +1,10 @@
+            Income              Limit             Rating              Cards                Age 
+      -0.598171486        0.958438722        0.382478949        0.052864969       -0.023033397 
+         Education       GenderFemale         StudentYes         MarriedYes     EthnicityAsian 
+      -0.007469459       -0.011593092        0.278154853       -0.009054196        0.015950671 
+EthnicityCaucasian 
+       0.011005286 
+[1] "TestMSE:"
+[1] 0.0501067
+[1] "Best Number of Components:"
+[1] 11
