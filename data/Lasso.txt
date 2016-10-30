@@ -1,0 +1,10 @@
+       (Intercept)             Income              Limit             Rating              Cards 
+      7.512316e-16      -5.514258e-01       7.815746e-01       5.110649e-01       3.884469e-02 
+               Age          Education       GenderFemale         StudentYes         MarriedYes 
+     -1.676893e-02       0.000000e+00      -1.522737e-05       2.660849e-01       0.000000e+00 
+    EthnicityAsian EthnicityCaucasian 
+      0.000000e+00       0.000000e+00 
+[1] "TestMSE:"
+[1] 0.04898757
+[1] "Best Lambda:"
+[1] 0.01
