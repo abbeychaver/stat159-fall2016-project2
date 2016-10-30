@@ -16,7 +16,7 @@ lasso_mod = glmnet(train_x, train_y, alpha=1, lambda=grid)
 cv_out = cv.glmnet(train_x, train_y, alpha=1, intercept=FALSE, standardize=FALSE, lambda=grid)
 
 # Best lambda value
-best_lambda = cv_out$lambda.min
+lasso_lambda = cv_out$lambda.min
 
 # Save plot for cross-validation errors in terms of the tuning parameter (lambda)
 png(filename="images/Lasso_MSE.png", width = 800, height = 600)
@@ -24,19 +24,19 @@ plot(cv_out)
 dev.off()
 
 # Calculate test values given the best lambda
-lasso_pred = predict(lasso_mod, s = best_lambda, newx=test_x)
+lasso_pred = predict(lasso_mod, s = lasso_lambda, newx=test_x)
 
 # Mean squared error for the test values
-test_mse = mean((lasso_pred-test_y)^2)
+lasso_mse = mean((lasso_pred-test_y)^2)
 
 # Refit the lasso model on the whole data set
 lasso_out = glmnet(scaled_x, scaled_y, alpha=1, lambda=grid)
 
 # Determine the coefficients given the best value of lambda
-lasso_coef = predict(lasso_out,type="coefficients",s=best_lambda)[1:12,]
+lasso_coeff = predict(lasso_out,type="coefficients",s=lasso_lambda)[2:12,]
 
 # Save cross validation output, best lambda, mse, and coefficients to RData file
-save(cv_out, best_lambda, test_mse, lasso_coef, file="data/lasso.RData")
+save(cv_out, lasso_lambda, lasso_mse, lasso_coeff, file="../../data/lasso.RData")
 
 # Write coefficients, best lambda, and mse to a text file
 sink("data/Lasso.txt")

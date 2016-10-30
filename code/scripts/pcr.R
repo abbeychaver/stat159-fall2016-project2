@@ -31,12 +31,13 @@ best_coefs <- pcr_model$coefficients[133:144]
 
 data <- read.csv("data/scaled-credit.csv")
 full_pcr_model <- pcr(Balance ~ ., data=data)
-best_coefs <- full_pcr_model$coefficients[133:144]
+best_coefs <- full_pcr_model$coefficients[, , 12][-1]
 
-sink("data/pcr.txt")
+sink("../../data/pcr.txt")
 best_coefs
 "testMSE:"
 test_mses[12]
+sink()
 
 
 save.image(file = "data/pcr.Rdata")

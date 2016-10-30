@@ -1,13 +1,8 @@
- [1]  0.0000892808 -0.5985008802  0.9565035184  0.3844850676  0.0531987331 -0.0236201215 -0.0074657455
- [8] -0.0103883295  0.2784291189 -0.0093158837  0.0160013002  0.0101187979
+            Income              Limit             Rating              Cards                Age 
+      -0.598500880        0.956503518        0.384485068        0.053198733       -0.023620121 
+         Education       GenderFemale         StudentYes         MarriedYes     EthnicityAsian 
+      -0.007465745       -0.010388330        0.278429119       -0.009315884        0.016001300 
+EthnicityCaucasian 
+       0.010118798 
 [1] "testMSE:"
 [1] 0.04926073
-function(col, name) {
-  sink(paste("data/Summary_", name, ".txt", sep=""))
-  pander(table(col))
-  pander(table(col)/nrow(data))
-  sink()
-  path = paste("images/Barplot_", name, ".png", sep="")
-  png(filename=path)
-  barplot(table(col), col="light blue", border = "white", main = paste("Frequency for", name))
-}
