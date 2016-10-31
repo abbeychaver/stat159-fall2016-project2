@@ -1,0 +1,20 @@
+# Results
+
+```{r include=FALSE}
+install.packages("pander", repos="http://cran.rstudio.com/")
+library(pander)
+load("../../data/results.Rdata")
+```
+
+```{r, echo=FALSE}
+pander(coeff_table)
+```
+
+```{r, echo=FALSE}
+pander(mse_table)
+```
+
+```{r, echo=FALSE}
+coeff_plot
+coeff_plot_separate
+```
