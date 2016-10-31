@@ -42,7 +42,14 @@ coeff_plot_separate = ggplot(coeff_df, aes(vars, coeff)) + geom_bar(stat="identi
 # single multibar plot
 coeff_plot = ggplot(coeff_df, aes(vars, coeff)) + geom_bar(aes(fill = model), position = "dodge", stat="identity") + xlab("Predictor") + ylab("Coefficient Value") + ggtitle("Comparison of Coefficient Values for Different Models")
 
+# create matrix of mses for all the models
 options("scipen" = 0, "digits" = 7)
 mse_mat = t(matrix(c(ols_mse, ridge_mse, lasso_mse, pcr_mse, pls_mse)))
-rownames(mse_mat) = vars
+rownames(mse_mat) = c("MSE")
 colnames(mse_mat) = c("OLS", "Ridge", "Lasso", "PCR", "PLSR")
+
+# create table from mse matrix
+mse_table = as.table(mse_mat)
+
+# Save tables and plots to Rdata file
+save(coeff_table, mse_table, coeff_plot, coeff_plot_separate, file="data/results.Rdata")
