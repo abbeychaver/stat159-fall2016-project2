@@ -1,23 +1,39 @@
+---
+output: pdf_document
+---
+
 # Results
 
 ```{r include=FALSE}
-install.packages("pander", repos="http://cran.rstudio.com/")
 library(pander)
+library(ggplot2)
 load("../../data/results.Rdata")
 ```
 
-```{r, echo=FALSE}
-pander(coeff_table)
+
+```{r, echo=FALSE, out.width=1000}
+panderOptions('round', 5)
+panderOptions('keep.trailing.zeros', TRUE)
+pander(coeff_table, caption="Coefficients for Different Models")
 ```
 
-```{r, echo=FALSE, warning=FALSE}
-pander(mse_table)
+As we can see in Table 1, which has the official coefficients from the Credit dataset for each of the models (Ordinary Least Squares, Ridge, Lasso, Principal Components Regression, and Partial Least Squares Regression), most of the coefficient estimates are similar across the different models but the lasso model does not have coefficient estimates for four of the predictors. 
+
+<img src="../../images/Coefficients_Plot.png" alt="Coefficients Plot" style="height: 200px;"/>
+![Coefficients Plot](../../images/Coefficients_Plot.png)
+
+Looking at a plot of these coefficients separated by model, we can more easily see for which predictors the estimated coefficients differ. The estimates for most of the predictors are very similar across the models, but for limit and rating, the estimated coefficients differ quite significantly. 
+
+<img src="../../images/Coefficients_Plot_Separate.png" alt="Coefficients Plot (separated)" style="height: 200px;"/>
+![Coefficients Plot (separated)](../../images/Coefficients_Plot_Separate.png)
+
+
+Another plot of these coefficients is given in Figure 2, which has separate plots for each of the models. 
+
+```{r, echo=FALSE, warning=FALSE, out.width=1000}
+pander(mse_table, caption="MSE for Different Models")
 ```
 
-```{r, echo=FALSE, warning=FALSE, out.width=1500, out.height=1000}
-coeff_plot
-```
+Now looking at Table 4, we can see the mean squared errors for our models, and that the lowest mean squared error for the regression alternatives (not the ordinary least squares model) is for the partial least squares regression model, with a value of `r I(mse_table[5])`. 
 
-```{r, echo=FALSE, warning=FALSE}
-coeff_plot_separate
-```
+

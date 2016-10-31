@@ -2,7 +2,7 @@ load("../../data/Ridge.Rdata")
 load("../../data/lasso.Rdata")
 load("../../data/pcr.Rdata")
 load("../../data/plsr.Rdata")
-scaled_data <- read.csv("data/datasets/scaled-credit.csv")[, -1]
+scaled_data <- read.csv("../../data/datasets/scaled-credit.csv")[, -1]
 
 library(ggplot2)
 
@@ -17,11 +17,11 @@ ridge_coeff = coef(fcv)[2:12,]
 pcr_coeff = best_coefs
 
 # turn off scientific notation
-options("scipen" = 100, "digits" = 1)
+options("scipen" = 100, "digits" = 2)
 
 # create coefficient matrix for all the models
 vars = names(pls_coeff)
-coeff_mat = t(matrix(c(unname(ols_coeff), unname(ridge_coeff), unname(lasso_coeff), unname(pcr_coeff), unname(pls_coeff)), ncol=11))
+coeff_mat = matrix(c(unname(ols_coeff), unname(ridge_coeff), unname(lasso_coeff), unname(pcr_coeff), unname(pls_coeff)), nrow=11)
 rownames(coeff_mat) = vars
 colnames(coeff_mat) = c("OLS", "Ridge", "Lasso", "PCR", "PLSR")
 
@@ -37,10 +37,11 @@ coeff_df$vars = factor(coeff_df$vars, levels=coeff_df$vars)
 coeff_df$model = factor(coeff_df$model, levels=coeff_df$model)
 
 # 5 plots separated by model
-coeff_plot_separate = ggplot(coeff_df, aes(vars, coeff)) + geom_bar(stat="identity") + facet_wrap( ~ model) + xlab("Predictor") + ylab("Coefficient Value") + ggtitle("Comparison of Coefficient Values for Different Models")
+coeff_plot_separate = ggplot(coeff_df, aes(vars, coeff)) + geom_bar(stat="identity") + facet_wrap( ~ model) + xlab("Predictor") + ylab("Coefficient Value") + ggtitle("Comparison of Coefficient Values for Different Models") + theme(text = element_text(size=10),
+                                                                                                                                                                                                                                       axis.text.x = element_text(angle=90, vjust=1)) 
 
 # single multibar plot
-coeff_plot = ggplot(coeff_df, aes(vars, coeff)) + geom_bar(aes(fill = model), position = "dodge", stat="identity") + xlab("Predictor") + ylab("Coefficient Value") + ggtitle("Comparison of Coefficient Values for Different Models") + theme(text = element_text(size=15),
+coeff_plot = ggplot(coeff_df, aes(vars, coeff)) + geom_bar(aes(fill = model), position = "dodge", stat="identity") + xlab("Predictor") + ylab("Coefficient Value") + ggtitle("Comparison of Coefficient Values for Different Models") + theme(text = element_text(size=10),
                                                                                                                                                                                                                                               axis.text.x = element_text(angle=90, vjust=1)) 
 
 # create matrix of mses for all the models
@@ -53,4 +54,15 @@ colnames(mse_mat) = c("OLS", "Ridge", "Lasso", "PCR", "PLSR")
 mse_table = as.table(mse_mat)
 
 # Save tables and plots to Rdata file
-save(coeff_table, mse_table, coeff_plot, coeff_plot_separate, file="../../data/results.Rdata")
+save(coeff_table, mse_table, file="../../data/results.Rdata")
+
+# Save plots as png images
+png(filename="../../images/Coefficients_Plot.png")
+coeff_plot
+dev.off()
+
+png(filename="../../images/Coefficients_Plot_Separate.png")
+coeff_plot_separate
+dev.off()
+
+
