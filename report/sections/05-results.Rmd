@@ -10,11 +10,14 @@ load("../../data/results.Rdata")
 pander(coeff_table)
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 pander(mse_table)
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, out.width=1500, out.height=1000}
 coeff_plot
+```
+
+```{r, echo=FALSE, warning=FALSE}
 coeff_plot_separate
 ```

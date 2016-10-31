@@ -40,7 +40,8 @@ coeff_df$model = factor(coeff_df$model, levels=coeff_df$model)
 coeff_plot_separate = ggplot(coeff_df, aes(vars, coeff)) + geom_bar(stat="identity") + facet_wrap( ~ model) + xlab("Predictor") + ylab("Coefficient Value") + ggtitle("Comparison of Coefficient Values for Different Models")
 
 # single multibar plot
-coeff_plot = ggplot(coeff_df, aes(vars, coeff)) + geom_bar(aes(fill = model), position = "dodge", stat="identity") + xlab("Predictor") + ylab("Coefficient Value") + ggtitle("Comparison of Coefficient Values for Different Models")
+coeff_plot = ggplot(coeff_df, aes(vars, coeff)) + geom_bar(aes(fill = model), position = "dodge", stat="identity") + xlab("Predictor") + ylab("Coefficient Value") + ggtitle("Comparison of Coefficient Values for Different Models") + theme(text = element_text(size=15),
+                                                                                                                                                                                                                                              axis.text.x = element_text(angle=90, vjust=1)) 
 
 # create matrix of mses for all the models
 options("scipen" = 0, "digits" = 7)
@@ -52,4 +53,4 @@ colnames(mse_mat) = c("OLS", "Ridge", "Lasso", "PCR", "PLSR")
 mse_table = as.table(mse_mat)
 
 # Save tables and plots to Rdata file
-save(coeff_table, mse_table, coeff_plot, coeff_plot_separate, file="data/results.Rdata")
+save(coeff_table, mse_table, coeff_plot, coeff_plot_separate, file="../../data/results.Rdata")
