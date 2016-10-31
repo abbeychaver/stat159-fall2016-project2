@@ -1,0 +1,10 @@
+---
+title: "Predictive Modeling Process"
+author: Abby Chaver and Tina Huang
+date: November 4, 2016
+output: pdf_document
+---
+
+# Abstract
+
+In this report, we will be examining the variables in the Credit.csv dataset from _An Introduction to Statistical Learning_ by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani. We will also be building different regression models in order to determine how to best predict Balance given ten predictors, using similar approaches as in Chapter 6. 

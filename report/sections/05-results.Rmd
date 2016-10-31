@@ -34,6 +34,6 @@ Another plot of these coefficients is given in Figure 2, which has separate plot
 pander(mse_table, caption="MSE for Different Models")
 ```
 
-Now looking at Table 4, we can see the mean squared errors for our models, and that the lowest mean squared error for the regression alternatives (not the ordinary least squares model) is for the partial least squares regression model, with a value of `r I(mse_table[5])`. 
+Now looking at Table 4, we can see the mean squared errors for our models, and that the lowest mean squared error for the regression alternatives (not the ordinary least squares model) is for the partial least squares regression model, with a value of `r I(mse_table[5])`. However in general, the ordinary least squares model still has the lowest mse of `r I(mse_table[1])`. 
 
 
