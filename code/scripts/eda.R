@@ -40,8 +40,12 @@ sink()
 
 
 set.seed(1234)
+new_data <- model.matrix(Balance ~ ., data=data)
+new_data <- cbind(new_data[ ,-1], Balance = data$Balance)
+scaled_data <- scale(new_data, center = TRUE, scale = TRUE)
+write.csv(scaled_data, file = "data/datasets/scaled_credit.csv")
 scaled_data <- scaled_data[sample(400),]
 training_data <- scaled_data[1:300, ]
-write.csv(training_data, file = "data/training-credit.csv")
+write.csv(training_data, file = "data/datasets/training_credit.csv")
 test_data <- scaled_data[301:400, ]
-write.csv(test_data, file = "data/test-credit.csv")
+write.csv(test_data, file = "data/datasets/test_credit.csv")

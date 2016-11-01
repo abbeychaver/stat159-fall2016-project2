@@ -1,7 +1,8 @@
 library(glmnet)
-scaled_data <- read.csv("data/datasets/scaled-credit.csv")[, -1]
-training_data <- read.csv("data/datasets/training-credit.csv")[, -1]
-test_data <- read.csv("data/datasets/test-credit.csv")[, -1]
+library(pander)
+scaled_data <- read.csv("data/datasets/scaled_credit.csv")[, -1]
+training_data <- read.csv("data/datasets/training_credit.csv")[, -1]
+test_data <- read.csv("data/datasets/test_credit.csv")[, -1]
 
 set.seed (1234)
 scaled_x = model.matrix(Balance ~ ., scaled_data)[,-1]
@@ -36,14 +37,14 @@ lasso_out = glmnet(scaled_x, scaled_y, alpha=1, lambda=grid)
 lasso_coeff = predict(lasso_out,type="coefficients",s=lasso_lambda)[2:12,]
 
 # Save cross validation output, best lambda, mse, and coefficients to RData file
-save(cv_out, lasso_lambda, lasso_mse, lasso_coeff, file="../../data/lasso.RData")
+save(cv_out, lasso_lambda, lasso_mse, lasso_coeff, file="data/lasso.RData")
 
 # Write coefficients, best lambda, and mse to a text file
 sink("data/Lasso.txt")
-lasso_coef
-"TestMSE:"
-test_mse
-"Best Lambda:"
-best_lambda
+pander(lasso_coeff)
+writeLines("\nTest MSE:\n")
+lasso_mse
+writeLines("\nBest Lambda:\n")
+lasso_lambda
 sink()
 

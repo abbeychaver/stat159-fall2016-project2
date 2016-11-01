@@ -1,6 +1,6 @@
 ---
 title: "Predictive Modeling Process"
-author: Abby Chaver and Tina Huang
+author: Abbey Chaver and Tina Huang
 date: November 4, 2016
 output: pdf_document
 ---

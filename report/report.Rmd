@@ -1,6 +1,6 @@
 ---
 title: "Predictive Modeling Process"
-author: Abby Chaver and Tina Huang
+author: Abbey Chaver and Tina Huang
 date: November 4, 2016
 output: pdf_document
 ---
@@ -50,7 +50,7 @@ output: pdf_document
 ```{r include=FALSE}
 library(pander)
 library(ggplot2)
-load("../../data/results.Rdata")
+load("../data/results.Rdata")
 ```
 
 
@@ -62,11 +62,11 @@ pander(coeff_table, caption="Coefficients for Different Models")
 
 As we can see in Table 1, which has the official coefficients from the Credit dataset for each of the models (Ordinary Least Squares, Ridge, Lasso, Principal Components Regression, and Partial Least Squares Regression), most of the coefficient estimates are similar across the different models but the lasso model does not have coefficient estimates for four of the predictors. 
 
-![Coefficients Plot](../../images/Coefficients_Plot.png) \begin{center}Figure 1: Coefficients Plot\end{center}
+![Coefficients Plot](../images/Coefficients_Plot.png) \begin{center}Figure 1: Coefficients Plot\end{center}
 
 Looking at a plot of these coefficients separated by model, we can more easily see for which predictors the estimated coefficients differ. The estimates for most of the predictors are very similar across the models, but for limit and rating, the estimated coefficients differ quite significantly. 
 
-![Coefficients Plot (separated)](../../images/Coefficients_Plot_Separate.png) \begin{center}Figure 2: Coefficients Plot (separated by model)\end{center}
+![Coefficients Plot (separated)](../images/Coefficients_Plot_Separate.png) \begin{center}Figure 2: Coefficients Plot (separated by model)\end{center}
 
 
 Another plot of these coefficients is given in Figure 2, which has separate plots for each of the models. 

@@ -2,14 +2,10 @@ load("../../data/Ridge.Rdata")
 load("../../data/lasso.Rdata")
 load("../../data/pcr.Rdata")
 load("../../data/plsr.Rdata")
-scaled_data <- read.csv("../../data/datasets/scaled-credit.csv")[, -1]
+load("../../data/ols.Rdata")
+scaled_data <- read.csv("../../data/datasets/scaled_credit.csv")[, -1]
 
 library(ggplot2)
-
-# ordinary least squares regression
-ols = lm(Balance~Income+Limit+Rating+Cards+Age+Education+GenderFemale+StudentYes+MarriedYes+EthnicityAsian+EthnicityCaucasian, data=scaled_data)
-ols_coeff = ols$coefficients[-1]
-ols_mse = mean(ols$residuals^2)
 
 ridge_mse = mse
 pcr_mse = test_mses[12]

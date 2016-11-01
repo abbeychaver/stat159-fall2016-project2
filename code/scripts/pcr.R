@@ -1,11 +1,12 @@
 library(pls)
-training <- read.csv("data/datasets/training-credit.csv")
+library(pander)
+training <- read.csv("data/datasets/training_credit.csv")
 trainX <- training[, 2:12]
 trainX <- as.matrix(trainX)
 trainY <- training[, 13]
 trainY <- as.vector(trainY)
 trainY <- as.numeric(unlist(trainY))
-test <- read.csv("data/test-credit.csv")
+test <- read.csv("data/datasets/test_credit.csv")
 testX <- test[, 2:12]
 testX <- as.matrix(testX)
 testY <- test[, 13]
@@ -29,13 +30,13 @@ which.min(test_mses)
 best_coefs <- pcr_model$coefficients[133:144]
 
 
-data <- read.csv("data/scaled-credit.csv")
+data <- read.csv("data/datasets/scaled_credit.csv")
 full_pcr_model <- pcr(Balance ~ ., data=data)
 best_coefs <- full_pcr_model$coefficients[, , 12][-1]
 
-sink("../../data/pcr.txt")
-best_coefs
-"testMSE:"
+sink("data/pcr.txt")
+pander(best_coefs)
+writeLines("\nTest MSE:\n")
 test_mses[12]
 sink()
 

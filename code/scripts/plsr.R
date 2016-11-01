@@ -1,7 +1,8 @@
 library(pls)
-scaled_data <- read.csv("data/datasets/scaled-credit.csv")[, -1]
-training_data <- read.csv("data/datasets/training-credit.csv")[, -1]
-test_data <- read.csv("data/datasets/test-credit.csv")[, -1]
+library(pander)
+scaled_data <- read.csv("data/datasets/scaled_credit.csv")[, -1]
+training_data <- read.csv("data/datasets/training_credit.csv")[, -1]
+test_data <- read.csv("data/datasets/test_credit.csv")[, -1]
 
 set.seed(1234)
 test_x = model.matrix(Balance ~ ., test_data)[,-1]
@@ -31,9 +32,9 @@ save(pls_fit, pls_comp, pls_mse, pls_coeff, file="data/plsr.RData")
 
 # Write coefficients, best number of components, and mse to a text file
 sink("data/plsr.txt")
-pander(coeff)
+pander(pls_coeff)
 writeLines("\nTest MSE:\n")
-mse
+pls_mse
 writeLines("\nBest Number of Components:\n")
-comp
+pls_comp
 sink()

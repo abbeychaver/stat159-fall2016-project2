@@ -1,11 +1,12 @@
 library(glmnet)
-training <- read.csv("data/datasets/training-credit.csv")
+library(pander)
+training <- read.csv("data/datasets/training_credit.csv")
 trainX <- training[, 2:12]
 trainX <- as.matrix(trainX)
 trainY <- training[, 13]
 trainY <- as.vector(trainY)
 trainY <- as.numeric(unlist(trainY))
-test <- read.csv("data/test-credit.csv")
+test <- read.csv("data/datasets/test_credit.csv")
 testX <- test[, 2:12]
 testX <- as.matrix(testX)
 testY <- test[, 13]
@@ -29,7 +30,7 @@ mse = ssq/nrow(testX)
 
 
 # Calculate Final Coefficients
-data <- read.csv("data/scaled-credit.csv")
+data <- read.csv("data/datasets/scaled_credit.csv")
 dataX <- data[, 2:12]
 dataX <- as.matrix(dataX)
 dataY <- data[, 13]
@@ -37,10 +38,10 @@ dataY <- as.vector(dataY)
 dataY <- as.numeric(unlist(dataY))
 fcv <- glmnet(dataX, dataY, intercept = FALSE, standardize = FALSE, lambda = lambda, alpha=0)
 sink("data/Ridge.txt")
-coef(fcv)
-"TestMSE:"
+pander(as.matrix(coef(fcv)))
+writeLines("\nTest MSE:\n")
 mse
-"Best Lambda:"
+writeLines("\nBest Lambda:\n")
 lambda
 sink()
 

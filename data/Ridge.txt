@@ -1,18 +1,37 @@
-12 x 1 sparse Matrix of class "dgCMatrix"
-                             s0
-(Intercept)         .          
-Income             -0.568706769
-Limit               0.718657903
-Rating              0.593058827
-Cards               0.044252756
-Age                -0.025384931
-Education          -0.005879651
-GenderFemale       -0.010677773
-StudentYes          0.273184181
-MarriedYes         -0.011027761
-EthnicityAsian      0.016378729
-EthnicityCaucasian  0.011011789
-[1] "TestMSE:"
-[1] 0.05102886
-[1] "Best Lambda:"
+
+---------------------------------
+         &nbsp;             s0   
+------------------------ --------
+    **(Intercept)**         0    
+
+       **Income**        -0.5687 
+
+       **Limit**          0.7187 
+
+       **Rating**         0.5931 
+
+       **Cards**         0.04425 
+
+        **Age**          -0.02538
+
+     **Education**       -0.00588
+
+    **GenderFemale**     -0.01068
+
+     **StudentYes**       0.2732 
+
+     **MarriedYes**      -0.01103
+
+   **EthnicityAsian**    0.01638 
+
+ **EthnicityCaucasian**  0.01101 
+---------------------------------
+
+
+Test MSE:
+
+[1] 0.04832156
+
+Best Lambda:
+
 [1] 0.01

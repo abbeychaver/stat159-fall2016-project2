@@ -33,7 +33,7 @@ descr_stats <- function(col, name) {
 # Qualitative Variables
 
 qual_descr <- function(col, name) {
-  sink(paste("data/Summary_", name, ".txt", sep=""))
+  sink(paste("data/summaries/Summary_", name, ".txt", sep=""))
   pander(table(col))
   pander(table(col)/nrow(data))
   sink()
