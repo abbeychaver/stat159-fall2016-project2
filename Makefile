@@ -55,9 +55,13 @@ plsr: $(scaled) $(train) $(test)
 regressions: $(scaled) $(train) $(test)
 	make ols && make ridge && make lasso && make pcr && make plsr
 
-# Creates the intermediate report/report.Rmd file, as well as the final report/report.pdf file
-report: $(rmds) $(imgs) $(res_data)
-	cat $(rmds) > $(outrmd) && Rscript -e "library(rmarkdown); render('report/report.Rmd', 'pdf_document')"
+# Creates the intermediate report/report.Rmd file
+$(outrmd): $(rmds) $(imgs) $(res_data)
+	cat $(rmds) > $@
+
+# Creates the final report/report.pdf file
+report: $(outrmd)
+	make $(outrmd) && Rscript -e "library(rmarkdown); render('report/report.Rmd', 'pdf_document')"
 
 # Creates txt file about the session info
 session:
@@ -70,13 +74,3 @@ clean:
 
 #tests:
 	#Rscript code/test-that.R
-
-#report: report/report.Rmd regression
-	#Rscript -e "rmarkdown::render('report/report.Rmd')"
-
-#regression: code/scripts/regression-script.R data/Advertising.csv
-	#Rscript code/scripts/regression-script.R
-
-#eda: code/scripts/eda-script.R data/Advertising.csv
-	#Rscript code/scripts/session-info-script.R
-	#Rscript code/scripts/eda-script.R
