@@ -11,3 +11,4 @@ For the shrinkage methods, we used the package `glmnet`. The function `cv.glmnet
 For the dimension reduction methods, we used the package `pls`. The functions `pcr()` and `plsr()` were used depending on which regression model we were fitting, with the argument `validation = "CV"` to perform 10-fold cross-validation. We call $validation$PRESS on the output of this function and then find the number of components that yields the lowest mse. To plot the cross-validation errors, we used the `validationPlot()` function. Similar to above, we find the mse by using the `predict()` function, and refit the model using the full data set with the functions `pcr()` or `plsr()` to find the official model coefficients. 
 
 To generate the final plots in the results, the `ggplot2` package was used. To format the summary tables, the `pander` package was used. 
+

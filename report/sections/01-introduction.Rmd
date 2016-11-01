@@ -1,3 +1,4 @@
 # Introduction
 
 The purpose of this report is to determine the best model for predicting Balance given ten different predictors, including quantitative variables such as income and qualitative variables such as ethnicity. The distributions of these variables will be examined through summaries and plots, and five different regression models will be applied to the data; ordinary least squares, ridge, lasso, primary components, and partial least squares. These five models will be compared by looking at their respective coefficients and also by comparing their mean squared errors. 
+

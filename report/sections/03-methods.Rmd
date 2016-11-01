@@ -9,3 +9,4 @@ Before fitting regression models, we will dummy out the categorical variables, a
 We will perform ordinary least squares on the data to serve as our benchmark regression model. In addition, we will also perform two shrinkage methods - ridge regression and lasso regression -  and two dimension reduction methods - principal components regression and partial least squares regression. 
 
 Finally we will compare the mean squared errors (mse) that result from using each of these regression models to determine the model that results in the lowest mse. 
+

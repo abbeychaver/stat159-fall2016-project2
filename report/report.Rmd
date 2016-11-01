@@ -1,0 +1,86 @@
+---
+title: "Predictive Modeling Process"
+author: Abby Chaver and Tina Huang
+date: November 4, 2016
+output: pdf_document
+---
+
+# Abstract
+
+In this report, we will be examining the variables in the Credit.csv dataset from _An Introduction to Statistical Learning_ by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani. We will also be building different regression models in order to determine how to best predict Balance given ten predictors, using similar approaches as in Chapter 6. 
+
+# Introduction
+
+The purpose of this report is to determine the best model for predicting Balance given ten different predictors, including quantitative variables such as income and qualitative variables such as ethnicity. The distributions of these variables will be examined through summaries and plots, and five different regression models will be applied to the data; ordinary least squares, ridge, lasso, primary components, and partial least squares. These five models will be compared by looking at their respective coefficients and also by comparing their mean squared errors. 
+
+# Data
+
+The Credit.csv dataset has the balance (or the average credit card debt) for individuals with a number of quantitative descriptors including age, cards (the number of credit cards), education (the number of years of education), income (thousands of dollars), limit (their credit limit), and rating (their credit rating), as well as qualitative descriptors such as gender, student (whether or not they're a student), married (whether or not they're married), and ethnicity. # Methods
+
+For each of the quantitative variables in the Credit.csv dataset, we will look at a summary of their distributions, which includes maximum, minimum, range, median, 1st and 3rd quartiles, IQR, mean, and standard deviation, as well as histograms and boxplots.
+
+To look at the association between balance and each of the variables, we will also create a matrix of correlations for all the quantitative variables, perform ANOVA tests between balance and all the qualitative variables, and also create conditional boxplots between balance and the qualitative variables. 
+
+Before fitting regression models, we will dummy out the categorical variables, and then mean-center and standardize all the variables so that they all have comparable scales. We will also take a random sample of size 300 from the Credit.csv dataset to be our training set, and the remaining 100 observations will serve as our test set. 
+
+We will perform ordinary least squares on the data to serve as our benchmark regression model. In addition, we will also perform two shrinkage methods - ridge regression and lasso regression -  and two dimension reduction methods - principal components regression and partial least squares regression. 
+
+Finally we will compare the mean squared errors (mse) that result from using each of these regression models to determine the model that results in the lowest mse. 
+
+# Analysis
+
+To look at the distributions of all the variables, we created functions in   `code/functions/data_functions.R`, `descr_stats()` for quantitative variables and `qual_descr()` for quantitative variables to create summaries of the variables, as well as any relevant plots such as histograms, boxplots, barplots, and conditional boxplots. To perform the ANOVA tests, we used the `aov()` function. 
+
+To prepare the data through processing, we "dummified" the factors using the function `model.matrix()`. We also mean-centered and standardized all the variables using the `scale()` function. 
+
+For the ordinary least squares regression model, we used the `lm()` function and retrieved the coefficients by calling `$coefficients` on the output. We calculated the mse of the model by calling `$residuals` on the lm output, squaring the residuals, and finding the mean of the result. 
+
+For the shrinkage methods, we used the package `glmnet`. The function `cv.glmnet()` was used to perform 10-fold cross-validation, and the best value of lambda was found by calling `$lambda.min` on the output. Using this value of lambda, we are able to use the test data set and find the mse by using the function `predict()`, and finding the mean of the squared differences between the predicted outputs and the actual test outputs. We also called the `glmnet()` function to fit the model on the full data set, and used `predict()` again to find the official model coefficients. 
+
+For the dimension reduction methods, we used the package `pls`. The functions `pcr()` and `plsr()` were used depending on which regression model we were fitting, with the argument `validation = "CV"` to perform 10-fold cross-validation. We call $validation$PRESS on the output of this function and then find the number of components that yields the lowest mse. To plot the cross-validation errors, we used the `validationPlot()` function. Similar to above, we find the mse by using the `predict()` function, and refit the model using the full data set with the functions `pcr()` or `plsr()` to find the official model coefficients. 
+
+To generate the final plots in the results, the `ggplot2` package was used. To format the summary tables, the `pander` package was used. 
+
+---
+output: pdf_document
+---
+
+# Results
+
+```{r include=FALSE}
+library(pander)
+library(ggplot2)
+load("../../data/results.Rdata")
+```
+
+
+```{r, echo=FALSE, out.width=1000}
+panderOptions('round', 5)
+panderOptions('keep.trailing.zeros', TRUE)
+pander(coeff_table, caption="Coefficients for Different Models")
+```
+
+As we can see in Table 1, which has the official coefficients from the Credit dataset for each of the models (Ordinary Least Squares, Ridge, Lasso, Principal Components Regression, and Partial Least Squares Regression), most of the coefficient estimates are similar across the different models but the lasso model does not have coefficient estimates for four of the predictors. 
+
+![Coefficients Plot](../../images/Coefficients_Plot.png) \begin{center}Figure 1: Coefficients Plot\end{center}
+
+Looking at a plot of these coefficients separated by model, we can more easily see for which predictors the estimated coefficients differ. The estimates for most of the predictors are very similar across the models, but for limit and rating, the estimated coefficients differ quite significantly. 
+
+![Coefficients Plot (separated)](../../images/Coefficients_Plot_Separate.png) \begin{center}Figure 2: Coefficients Plot (separated by model)\end{center}
+
+
+Another plot of these coefficients is given in Figure 2, which has separate plots for each of the models. 
+
+```{r, echo=FALSE, warning=FALSE, out.width=1000}
+pander(mse_table, caption="MSE for Different Models")
+```
+
+Now looking at Table 4, we can see the mean squared errors for our models, and that the lowest mean squared error for the regression alternatives (not the ordinary least squares model) is for the partial least squares regression model, with a value of `r I(mse_table[5])`. However in general, the ordinary least squares model still has the lowest mse of `r I(mse_table[1])`. 
+
+
+
+
+# Conclusions
+
+In this project, we have built five different regression models to predict Balance based on ten predictors from the dataset Credit.csv. Based on our results, we see that the ordinary least squares regression model yields the lowest mean squared error overall, and the partial least squares regression model yields the lowest mean squared error of the alternative regression models. Therefore we conclude that the ordinary least squares model is the most accurate predictor for Balance based on the ten predictors. 
+
