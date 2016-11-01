@@ -1,0 +1,26 @@
+---
+title: "Predictive Modeling Process"
+output: ioslides_presentation
+---
+
+## Introduction
+- Credit.csv dataset
+- Want to predict Balance given ten predictors
+
+## Getting up
+
+- Turn off alarm
+- Get out of bed
+
+## Breakfast
+
+- Eat eggs
+- Drink coffee
+
+# In the evening
+
+## Dinner
+
+- Eat spaghetti
+- Drink wine
+
