@@ -1,0 +1,59 @@
+R version 3.3.1 (2016-06-21)
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+Running under: OS X 10.9.5 (Mavericks)
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] grid      methods   stats     graphics  grDevices utils     datasets 
+[8] base     
+
+other attached packages:
+ [1] fields_8.4-1  maps_3.1.1    spam_1.4-0    pls_2.5-0     glmnet_2.0-5 
+ [6] foreach_1.4.3 Matrix_1.2-6  ggplot2_2.1.0 pander_0.6.0  rmarkdown_1.0
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.7      codetools_0.2-14 lattice_0.20-33  digest_0.6.10   
+ [5] plyr_1.8.4       gtable_0.2.0     magrittr_1.5     evaluate_0.10   
+ [9] scales_0.4.0     stringi_1.1.2    iterators_1.0.8  tools_3.3.1     
+[13] stringr_1.1.0    munsell_0.4.3    colorspace_1.2-6 htmltools_0.3.5 
+
+
+git version 1.9.3 (Apple Git-50)
+ 
+pdfTeX 3.14159265-2.6-1.40.17 (TeX Live 2016)
+kpathsea version 6.2.2
+Copyright 2016 Han The Thanh (pdfTeX) et al.
+There is NO warranty.  Redistribution of this software is
+covered by the terms of both the pdfTeX copyright and
+the Lesser GNU General Public License.
+For more information about these matters, see the file
+named COPYING and the pdfTeX source.
+Primary author of pdfTeX: Han The Thanh (pdfTeX) et al.
+Compiled with libpng 1.6.21; using libpng 1.6.21
+Compiled with zlib 1.2.8; using zlib 1.2.8
+Compiled with xpdf version 3.04
+ 
+pandoc 1.17.0.3
+Compiled with texmath 0.8.6.3, highlighting-kate 0.6.2.
+Syntax highlighting is supported for the following languages:
+    abc, actionscript, ada, agda, apache, asn1, asp, awk, bash, bibtex, boo, c,
+    changelog, clojure, cmake, coffee, coldfusion, commonlisp, cpp, cs, css,
+    curry, d, diff, djangotemplate, dockerfile, dot, doxygen, doxygenlua, dtd,
+    eiffel, elixir, email, erlang, fasm, fortran, fsharp, gcc, glsl,
+    gnuassembler, go, hamlet, haskell, haxe, html, idris, ini, isocpp, java,
+    javadoc, javascript, json, jsp, julia, kotlin, latex, lex, lilypond,
+    literatecurry, literatehaskell, llvm, lua, m4, makefile, mandoc, markdown,
+    mathematica, matlab, maxima, mediawiki, metafont, mips, modelines, modula2,
+    modula3, monobasic, nasm, noweb, objectivec, objectivecpp, ocaml, octave,
+    opencl, pascal, perl, php, pike, postscript, prolog, pure, python, r,
+    relaxng, relaxngcompact, rest, rhtml, roff, ruby, rust, scala, scheme, sci,
+    sed, sgml, sql, sqlmysql, sqlpostgresql, tcl, tcsh, texinfo, verilog, vhdl,
+    xml, xorg, xslt, xul, yacc, yaml, zsh
+Default user data directory: /Users/tinahuang/.pandoc
+Copyright (C) 2006-2016 John MacFarlane
+Web:  http://pandoc.org
+This is free software; see the source for copying conditions.
+There is no warranty, not even for merchantability or fitness
+for a particular purpose.

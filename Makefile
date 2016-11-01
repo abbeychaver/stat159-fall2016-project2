@@ -7,6 +7,7 @@ outrmd = report/report.Rmd
 eda = code/scripts/eda.R
 funcs = code/functions/data_functions.R
 session = code/scripts/session_info.R
+info = session_info.txt
 
 # Datasets
 credit = data/datasets/Credit.csv
@@ -65,7 +66,7 @@ report: $(outrmd)
 
 # Creates txt file about the session info
 session:
-	Rscript $(session)
+	Rscript $(session) && git --version >> $(info) && echo \ >> $(info) && latex --version >> $(info) && echo \ >> $(info) && pandoc --version >> $(info)
 
 # Deletes the generated report/report.rmd and report/report.pdf files
 clean:

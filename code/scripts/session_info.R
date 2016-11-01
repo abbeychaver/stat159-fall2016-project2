@@ -8,4 +8,5 @@ library(fields)
 # Write the session info to output file
 sink("session_info.txt")
 sessionInfo()
+writeLines("\n")
 sink()
