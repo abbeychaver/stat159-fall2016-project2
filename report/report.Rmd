@@ -15,9 +15,13 @@ The purpose of this report is to determine the best model for predicting Balance
 
 # Data
 
-The Credit.csv dataset has the balance (or the average credit card debt) for individuals with a number of quantitative descriptors including age, cards (the number of credit cards), education (the number of years of education), income (thousands of dollars), limit (their credit limit), and rating (their credit rating), as well as qualitative descriptors such as gender, student (whether or not they're a student), married (whether or not they're married), and ethnicity. # Methods
+The Credit.csv dataset has the balance (or the average credit card debt) for individuals with a number of quantitative descriptors including age, cards (the number of credit cards), education (the number of years of education), income (thousands of dollars), limit (their credit limit), and rating (their credit rating), as well as qualitative descriptors such as gender, student (whether or not they're a student), married (whether or not they're married), and ethnicity. 
+
+# Methods
 
 For each of the quantitative variables in the Credit.csv dataset, we will look at a summary of their distributions, which includes maximum, minimum, range, median, 1st and 3rd quartiles, IQR, mean, and standard deviation, as well as histograms and boxplots.
+
+For the qualitative variables, we will create both frequency and relative frequency tables, as well as barcharts of these tables. 
 
 To look at the association between balance and each of the variables, we will also create a matrix of correlations for all the quantitative variables, perform ANOVA tests between balance and all the qualitative variables, and also create conditional boxplots between balance and the qualitative variables. 
 
@@ -35,7 +39,7 @@ To prepare the data through processing, we "dummified" the factors using the fun
 
 For the ordinary least squares regression model, we used the `lm()` function and retrieved the coefficients by calling `$coefficients` on the output. We calculated the mse of the model by calling `$residuals` on the lm output, squaring the residuals, and finding the mean of the result. 
 
-For the shrinkage methods, we used the package `glmnet`. The function `cv.glmnet()` was used to perform 10-fold cross-validation, and the best value of lambda was found by calling `$lambda.min` on the output. Using this value of lambda, we are able to use the test data set and find the mse by using the function `predict()`, and finding the mean of the squared differences between the predicted outputs and the actual test outputs. We also called the `glmnet()` function to fit the model on the full data set, and used `predict()` again to find the official model coefficients. 
+For the shrinkage methods, we used the package `glmnet`. The function `cv.glmnet()` was used to perform cross-validation, and the best value of lambda was found by calling `$lambda.min` on the output. Using this value of lambda, we are able to use the test data set and find the mse by using the function `predict()`, and finding the mean of the squared differences between the predicted outputs and the actual test outputs. We also called the `glmnet()` function to fit the model on the full data set, and used `predict()` again to find the official model coefficients. 
 
 For the dimension reduction methods, we used the package `pls`. The functions `pcr()` and `plsr()` were used depending on which regression model we were fitting, with the argument `validation = "CV"` to perform 10-fold cross-validation. We call $validation$PRESS on the output of this function and then find the number of components that yields the lowest mse. To plot the cross-validation errors, we used the `validationPlot()` function. Similar to above, we find the mse by using the `predict()` function, and refit the model using the full data set with the functions `pcr()` or `plsr()` to find the official model coefficients. 
 

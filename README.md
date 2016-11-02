@@ -31,7 +31,7 @@ stat159-fall2016-project2/
    slides/
       ...
 ```
-The dataset for this project is `data/Credict.csv`.
+The dataset for this project is `data/Credit.csv`.
 
 `code/functions/data_functions.R` contains the functions that generate the summary files and plots for the variables in the Credit.csv dataset. 
 

@@ -2,6 +2,8 @@
 
 For each of the quantitative variables in the Credit.csv dataset, we will look at a summary of their distributions, which includes maximum, minimum, range, median, 1st and 3rd quartiles, IQR, mean, and standard deviation, as well as histograms and boxplots.
 
+For the qualitative variables, we will create both frequency and relative frequency tables, as well as barcharts of these tables. 
+
 To look at the association between balance and each of the variables, we will also create a matrix of correlations for all the quantitative variables, perform ANOVA tests between balance and all the qualitative variables, and also create conditional boxplots between balance and the qualitative variables. 
 
 Before fitting regression models, we will dummy out the categorical variables, and then mean-center and standardize all the variables so that they all have comparable scales. We will also take a random sample of size 300 from the Credit.csv dataset to be our training set, and the remaining 100 observations will serve as our test set. 

@@ -1,16 +1,132 @@
 ---
 title: "Predictive Modeling Process"
 output: ioslides_presentation
+fontsize: 10pt
 ---
+```{r setup, include=FALSE, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(pander)
+data <- read.csv("../data/datasets/Credit.csv", header=TRUE, row.names = 1)
+```
 
 ## Introduction
 - Credit.csv dataset
+```{r, echo=FALSE}
+panderOptions('table.split.table',60)
+pander(head(data, 2))
+```
+
 - Want to predict Balance given ten predictors
 
-## Getting up
+# Methods
 
-- Turn off alarm
-- Get out of bed
+## Summaries of Variables
+- Quantitative
+  - Summary table of max, min, range, median, 1st and 3rd quartiles, IQR, mean, and sd
+  - Histograms
+  - Boxplots
+- Qualitative
+  - Frequency and Relative Frequency Tables
+  - Barplots of Frequencies
+  - Conditional Boxplots between Balance and the qualitative variable
+  
+## Example: Income
+<div class="columns-2">
+  <img src="../images/Boxplot_Income.png" alt="Income Boxplot" height="400" width="400">
+  
+  <img src="../images/Histogram_Income.png" alt="Income Histogram" height="400" width="400">
+</div>
+
+## Example: Student (yes or no)
+
+<div class="columns-2">
+  <img src="../images/Barplot_Student.png" alt="Student Barplot" height="400" width="400">
+  
+  <img src="../images/Conditional_Boxplot_Balance_Student.png" alt="Balance Student Boxplot" height="400" width="400">
+</div>
+
+## Preparing the Data
+
+- Dummy out the categorical variables
+
+```
+new_data <- model.matrix(Balance ~ ., data=data)
+new_data <- cbind(new_data[ ,-1], Balance = data$Balance)
+```
+
+- Mean-center and standardize all variables
+
+```
+scaled_data <- scale(new_data, center = TRUE, scale = TRUE)
+```
+
+- Divide scaled data into training and test sets
+
+# Regression Models
+
+## Ordinary Least Squares
+- Use `lm()` function
+- Then find the coefficients and mse of the model
+
+```
+ols = lm(Balance~Income+Limit+Rating+Cards+Age+Education+GenderFemale
++StudentYes+MarriedYes+EthnicityAsian+EthnicityCaucasian, data=scaled_data)
+
+ols_coeff = ols$coefficients[-1]
+
+ols_mse = mean(ols$residuals^2)
+```
+
+## Ridge
+
+- Use `glmnet` R package
+- First perform cross validation on the training set to find the value of lambda that results in the lowest cross validation error
+
+```
+grid <- grid <- 10^(seq(10, -2, length = 100))
+
+cv <- cv.glmnet(trainX, trainY, intercept = FALSE, standardize = FALSE, lambda = grid,
+alpha=0)
+
+lambda = cv$lambda.min
+```
+
+## Ridge: Continued
+
+- Find mean squared error of the best model with this value of lambda on the test set
+
+```
+predictedY <- predict(cv, newx = testX, s = "lambda.min")
+ssq <- sum((predictedY - testY)^2)
+mse = ssq/nrow(testX)
+```
+
+- Using that value of lambda, refit the model on the whole dataset to find the official coefficients
+
+```
+fcv <- glmnet(dataX, dataY, intercept = FALSE, standardize = FALSE, lambda = lambda,
+alpha=0)
+coeff <- coef(fcv)
+```
+
+## Lasso
+
+- Similar to Ridge, first perform cross validation to find best value of lambda
+
+```
+cv_out = cv.glmnet(train_x, train_y, alpha=1, intercept=FALSE, standardize=FALSE,
+lambda=grid)
+lasso_lambda = cv_out$lambda.min
+```
+
+- Find the mse, then refit the model to find the official coefficients
+
+```
+lasso_pred = predict(lasso_mod, s = lasso_lambda, newx=test_x)
+lasso_mse = mean((lasso_pred-test_y)^2)
+lasso_out = glmnet(scaled_x, scaled_y, alpha=1, lambda=grid)
+lasso_coeff = predict(lasso_out,type="coefficients",s=lasso_lambda)[2:12,]
+```
 
 ## Breakfast
 
