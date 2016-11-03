@@ -1,5 +1,6 @@
 ---
 title: "Predictive Modeling Process"
+author: "Abbey Chaver and Tina Huang"
 output: ioslides_presentation
 ---
 ```{r setup, include=FALSE, echo=FALSE}
