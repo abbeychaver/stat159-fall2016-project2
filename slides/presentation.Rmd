@@ -1,7 +1,6 @@
 ---
 title: "Predictive Modeling Process"
 output: ioslides_presentation
-fontsize: 10pt
 ---
 ```{r setup, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -21,14 +20,16 @@ pander(head(data, 2))
 # Methods
 
 ## Summaries of Variables
-- Quantitative
-  - Summary table of max, min, range, median, 1st and 3rd quartiles, IQR, mean, and sd
-  - Histograms
-  - Boxplots
+
+- Quantitative  
+    - Summary table of max, min, range, median, 1st and 3rd quartiles, IQR, mean, and sd  
+    - Histograms  
+    - Boxplots
+  
 - Qualitative
-  - Frequency and Relative Frequency Tables
-  - Barplots of Frequencies
-  - Conditional Boxplots between Balance and the qualitative variable
+    - Frequency and Relative Frequency Tables
+    - Barplots of Frequencies
+    - Conditional Boxplots between Balance and the qualitative variable
   
 ## Example: Income
 <div class="columns-2">
@@ -134,6 +135,7 @@ lasso_coeff = predict(lasso_out,type="coefficients",s=lasso_lambda)[2:12,]
 - Peform 10-fold cross-validation on the training set 
 - Find the number of components which yields the lowest mse
 - Apply the model to the whole dataset with the number of components, and find the official coefficients
+
 ```
 pcr_model <- pcr(Balance ~ ., data=training, validation = "CV")
 test_mses <- c(rep(0, 12))
@@ -171,14 +173,14 @@ pls_coeff = pls_out$coefficients[, , pls_comp]
 
 ## Table of MSEs
 
-```{r}
-
+```{r echo=FALSE}
+load("../data/results.Rdata")
+panderOptions('round', 5)
+pander(mse_table, caption="MSE for Different Models")
 
 ```
-# In the evening
 
-## Dinner
+- We can see that ols and pls have the lowest mean squared errors, and would therefore be the best models for predicting Balance
 
-- Eat spaghetti
-- Drink wine
+# Thanks!
 
