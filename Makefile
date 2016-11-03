@@ -69,6 +69,10 @@ session:
 	#Rscript $(session) && git --version >> $(info) && echo \ >> $(info) && latex --version >> $(info) && echo \ >> $(info) && pandoc --version >> $(info)
 	bash session.sh
 
+# Generates slides in html format
+slides: slides/presentation.Rmd
+	Rscript -e "library(rmarkdown); render('slides/presentation.Rmd', 'html_document')"
+
 # Deletes the generated report/report.rmd and report/report.pdf files
 clean:
 	rm -f report/report.pdf $(outrmd)
