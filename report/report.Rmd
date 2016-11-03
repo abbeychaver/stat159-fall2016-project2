@@ -13,9 +13,103 @@ In this report, we will be examining the variables in the Credit.csv dataset fro
 
 The purpose of this report is to determine the best model for predicting Balance given ten different predictors, including quantitative variables such as income and qualitative variables such as ethnicity. The distributions of these variables will be examined through summaries and plots, and five different regression models will be applied to the data; ordinary least squares, ridge, lasso, principal components, and partial least squares. These five models will be compared by looking at their respective coefficients and also by comparing their mean squared errors. 
 
+
 # Data
 
 The Credit.csv dataset has the balance (or the average credit card debt) for individuals with a number of quantitative descriptors including age, cards (the number of credit cards), education (the number of years of education), income (thousands of dollars), limit (their credit limit), and rating (their credit rating), as well as qualitative descriptors such as gender, student (whether or not they're a student), married (whether or not they're married), and ethnicity. 
+
+Our target variable is `Balance`. We get a sense of how it's distributed with a boxplot and histogram.
+
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("../images/Histogram_Balance.png")
+knitr::include_graphics("../images/Boxplot_Balance.png")
+```
+
+*The average balance falls at about \$5000, with a long tail.A fairly unusual distribution - a huge portion of accounts have balances below \$200.*
+
+### Quantitative Predictors
+
+Now we look at our predictors, with an initial visual exploration of the quantitative variables. 
+
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("../images/Boxplot_Age.png")
+knitr::include_graphics("../images/Boxplot_Age.png")
+```
+
+*Account holders are on average in their fiftes, with a generous spread. Ages are fairly normally distributed.*
+
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("../images/Boxplot_Cards.png")
+knitr::include_graphics("../images/Boxplot_Cards.png")
+```
+
+*The average account holder has around 3 cards. Cards look more exponentially distributed.*
+
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("../images/Boxplot_Education.png")
+knitr::include_graphics("../images/Boxplot_Education.png")
+```
+
+*The interquartile range of education falls between 12 and 16 years - highschool and college. Years of education is fairly normal with a bit of a left skew.*
+
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("../images/Boxplot_Income.png")
+knitr::include_graphics("../images/Boxplot_Income.png")
+```
+
+*The mean seems to be around \$30,000 a year. Incomes skew right in this data set.*
+
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("../images/Boxplot_Limit.png")
+knitr::include_graphics("../images/Boxplot_Limit.png")
+```
+
+*The average credit limit is around \$5000, with a long tail. Credit limits are distributed normal with a right skew.*
+
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("../images/Boxplot_Rating.png")
+knitr::include_graphics("../images/Boxplot_Rating.png")
+```
+
+*Ratings are a bit less than 400, on average. Rating is distributed similarly to Credit.*
+
+We look at the correlation matrix of the quantitative variables to get a visual sense of how they are related.
+
+![](../images/correlation_scatterplot.png)
+*Most variables look positively correlated with `Balance`. `Income`, `Limit`, and `Rating` all seem to have particularly high correlations and less noise. However, they look closely correlated with each other, which can be a problem for linear modeling. Fortunately, our dimension reduction techniques can ameliorate some of those issues- we may hypothesize that they will do particularly well on this data.*
+
+### Qualitative Predictors
+Now we consider qualitative variables, with histograms and conditional boxplots (we look at the values of `Balance` grouped by the variable in question).
+
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("../images/Barplot_Gender.png")
+knitr::include_graphics("../images/Conditional_Boxplot_Balance_Gender.png")
+```
+
+*Accounts are split fairly evenly, with a few more held by women. Average account balance is about the same, but the spreads are slightly different between genders.*
+
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("../images/Barplot_Ethnicity.png")
+knitr::include_graphics("../images/Conditional_Boxplot_Balance_Ethnicity.png")
+```
+
+*Account holders are about a quarter African American, a quarter Asian, and half Caucasian. Average account balance is about the same across ethnicities, with Asian accounts being distributed a bit more widely.*
+
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("../images/Barplot_Student.png")
+knitr::include_graphics("../images/Conditional_Boxplot_Balance_Student.png")
+```
+
+*Most account holders are not students.Students generally seem to have much higher balances - surprising considering that they rarely have significant income.*
+
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("../images/Barplot_Married.png")
+knitr::include_graphics("../images/Conditional_Boxplot_Balance_Married.png")
+```
+
+*A majority of account holders are married, but there are plenty of nonmarried account holders. Balances seem to be similarly distributed for married and nonmarried accounts.*
+
+Overall, we get the sense that `Income`, `Rating`, `Limit`, and `Student` will be particularly useful predictors for `Balance`.
 
 # Methods
 

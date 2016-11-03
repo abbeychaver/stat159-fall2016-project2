@@ -22,11 +22,11 @@ descr_stats <- function(col, name) {
   sink()
   path = paste("images/Histogram_", name, ".png", sep="")
   png(filename = path)
-  hist(col, main = paste("Histogram for ", name))
+  hist(col, main = paste("Histogram for ", name), col="light blue", border = "white")
   dev.off()
   path = paste("images/Boxplot_", name, ".png", sep="")
   png(filename=path)
-  boxplot(col, main = paste("Boxplot for ", name))
+  boxplot(col, main = paste("Boxplot for ", name), col="light blue")
   dev.off()
 }
 
