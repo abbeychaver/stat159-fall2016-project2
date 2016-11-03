@@ -128,11 +128,53 @@ lasso_out = glmnet(scaled_x, scaled_y, alpha=1, lambda=grid)
 lasso_coeff = predict(lasso_out,type="coefficients",s=lasso_lambda)[2:12,]
 ```
 
-## Breakfast
+## Principal Components
 
-- Eat eggs
-- Drink coffee
+- Use `pls` R package
+- Peform 10-fold cross-validation on the training set 
+- Find the number of components which yields the lowest mse
+- Apply the model to the whole dataset with the number of components, and find the official coefficients
+```
+pcr_model <- pcr(Balance ~ ., data=training, validation = "CV")
+test_mses <- c(rep(0, 12))
+for (i in 1:12) {
+  pcr_pred <- predict(pcr_model, test, ncomp = i)
+  test_mses[i] = mean((pcr_pred - testY)^2)
+}
+which.min(test_mses)
+full_pcr_model <- pcr(Balance ~ ., data=data)
+best_coefs <- full_pcr_model$coefficients[, , 12][-1]
+```
 
+## Partial Least Squares
+
+- Similar to Principal Components, use `pls` package
+- Perform 10-fold cross validation to find the best number of components
+- Fit the model with this number of components to the whole dataset and find the coefficients
+
+```
+pls_fit = plsr(Balance ~ ., data=training_data,scale=TRUE, validation="CV")
+pls_comp = which.min(pls_fit$validation$PRESS)
+
+pls_pred = predict(pls_fit, test_x, ncomp=pls_comp)
+pls_mse = mean((pls_pred-test_y)^2)
+
+pls_out = plsr(Balance ~ ., data=scaled_data ,scale=TRUE,ncomp=pls_comp)
+pls_coeff = pls_out$coefficients[, , pls_comp]
+```
+
+# Comparison of All Models
+
+## Plot of Coefficients
+
+<img src="../images/Coefficients_Plot.png" alt="Coefficients Plot" height="500" width="800">
+
+## Table of MSEs
+
+```{r}
+
+
+```
 # In the evening
 
 ## Dinner
