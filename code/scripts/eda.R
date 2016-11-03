@@ -33,10 +33,13 @@ data$Ethnicity <- factor(data$Ethnicity)
 
 # ANOVA between balance and qualitative statistics
 sink("data/anova.txt")
-fit <- aov(data$Balance ~ data$Gender+data$Student+data$Married+data$Ethnicity)
-fit
-summary(fit)
+aov_qualitative <- aov(data$Balance ~ data$Gender+data$Student+data$Married+data$Ethnicity)
+aov_qualitative
+summary(aov_qualitative)
 sink()
+
+save.image("data/eda.Rdata")
+
 
 
 set.seed(1234)

@@ -4,7 +4,7 @@ library(fields)
 # Quantitative Variables
 
 descr_stats <- function(col, name) {
-  names <- c("Minimum", "Maximum", "Range", "Median", "First Quartile","Third Quartile",
+  Statistic <- c("Minimum", "Maximum", "Range", "Median", "First Quartile","Third Quartile",
              "Interquartile Range", "Mean", "Standard Deviation")
   minimum = min(col)
   maximum = max(col)
@@ -15,24 +15,26 @@ descr_stats <- function(col, name) {
   IQR <- IQR(col)
   mean <- mean(col)
   sd <- sd(col)
-  vals <- c(minimum, maximum, range, median, first_q, third_q,
+  Value <- c(minimum, maximum, range, median, first_q, third_q,
             IQR, mean, sd)
-  sink(paste("data/summaries/Summary_", name, ".txt", sep=""))
-  pander(data.frame(names, vals))
-  sink()
+  summary <- data.frame(Statistic, Value)
+  write.csv(summary, file = paste("data/summaries/Summary_", name, ".csv", sep=""))
   path = paste("images/Histogram_", name, ".png", sep="")
   png(filename = path)
-  hist(col, main = paste("Histogram for ", name), col="light blue", border = "white")
+  hist(col, main = paste("Histogram for ", name), col="light blue", border = "white",  xlab = name)
   dev.off()
   path = paste("images/Boxplot_", name, ".png", sep="")
   png(filename=path)
-  boxplot(col, main = paste("Boxplot for ", name), col="light blue")
+  boxplot(col, main = paste("Boxplot for ", name), col="light blue",  xlab = name)
   dev.off()
 }
 
 # Qualitative Variables
 
 qual_descr <- function(col, name) {
+  freq <- table(col)
+  write.csv(freq, file = paste("data/summaries/Summary_", name, ".csv", sep=""))
+  write.csv(freq/nrow(data), file = paste("data/summaries/Freq_Summary_", name, ".csv", sep=""))
   sink(paste("data/summaries/Summary_", name, ".txt", sep=""))
   pander(table(col))
   pander(table(col)/nrow(data))
