@@ -1,4 +1,6 @@
 library(rmarkdown)
+library(devtools)
+library(knitr)
 library(pander)
 library(ggplot2)
 library(glmnet)
@@ -6,7 +8,8 @@ library(pls)
 library(fields)
 
 # Write the session info to output file
-sink("session_info.txt")
-sessionInfo()
+sink("../../session_info.txt", append=TRUE)
+print(sessionInfo())
+devtools::session_info()
 writeLines("\n")
 sink()

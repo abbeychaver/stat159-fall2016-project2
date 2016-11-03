@@ -66,7 +66,8 @@ report: $(outrmd)
 
 # Creates txt file about the session info
 session:
-	Rscript $(session) && git --version >> $(info) && echo \ >> $(info) && latex --version >> $(info) && echo \ >> $(info) && pandoc --version >> $(info)
+	#Rscript $(session) && git --version >> $(info) && echo \ >> $(info) && latex --version >> $(info) && echo \ >> $(info) && pandoc --version >> $(info)
+	bash session.sh
 
 # Deletes the generated report/report.rmd and report/report.pdf files
 clean:
