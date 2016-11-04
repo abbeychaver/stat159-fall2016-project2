@@ -76,7 +76,7 @@ income <- read.csv("../data/summaries/Summary_Income.csv", header = TRUE, row.na
 pander(income)
 ```
 
-*Incomes skew heavily right in this data set - there is a large difference between the mean income, \$45,00, and the median, \$30,000*
+*Incomes skew heavily right in this data set - there is a large difference between the mean income, \$45,00, and the median, \$30,000.*
 
 ### Credit Limit
 
@@ -109,12 +109,13 @@ pander(rating)
 ### Correlations
 
 We look at the correlation matrix of the quantitative variables to get a visual sense of how they are related.
-
-![](../images/correlation_scatterplot.png)
-
 ```{r=FALSE, echo=FALSE}
 load("../data/eda.Rdata")
 pander(cor(quant_data))
+```
+
+```{r, out.width = "500px", echo=FALSE}
+knitr::include_graphics("../images/correlation_scatterplot.png")
 ```
 Most variables look positively correlated with `Balance`. `Income`, `Limit`, and `Rating` all seem to have particularly high correlations and less noise. However, they look closely correlated with each other, which can be a problem for linear modeling. Fortunately, our dimension reduction techniques can ameliorate some of those issues- we may hypothesize that they will do particularly well on this data.
 

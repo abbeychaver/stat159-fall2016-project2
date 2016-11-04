@@ -16,11 +16,11 @@ panderOptions('table.split.table',60)
 pander(head(data, 2))
 ```
 
-- Want to predict Balance given ten predictors
+- Want to predict `Balance` of an account, given ten predictors
 
 # Methods
 
-## Summaries of Variables
+## Exploration of Variables
 
 - Quantitative  
     - Summary table of max, min, range, median, 1st and 3rd quartiles, IQR, mean, and sd  
@@ -46,6 +46,14 @@ pander(head(data, 2))
   
   <img src="../images/Conditional_Boxplot_Balance_Student.png" alt="Balance Student Boxplot" height="400" width="400">
 </div>
+
+## Identifying Correlations
+<div class="columns-2", style="margins:auto">
+  <img src="../images/correlation_scatterplot.png" alt="Correlation Matrix plot" height="400" width="400">
+</div>
+
+- `Income`, `Limit`, and `Rating` are correlated with `Balance`
+- Highly correlated with each other
 
 ## Preparing the Data
 
@@ -80,47 +88,57 @@ ols_mse = mean(ols$residuals^2)
 ```
 
 ## Ridge
+<div class="columns-2">
+  <img src="../images/Ridge_MSE.png" alt="Ridge MSE" height="400" width="400">
+  
+  - Use `glmnet` R package
+  
+  - First perform cross validation on the training set to find the value of lambda that results in the lowest cross validation error
 
-- Use `glmnet` R package
-- First perform cross validation on the training set to find the value of lambda that results in the lowest cross validation error
+  - Smallest value of lambda is optimal
+  
+</div>
 
-```
-grid <- grid <- 10^(seq(10, -2, length = 100))
 
-cv <- cv.glmnet(trainX, trainY, intercept = FALSE, standardize = FALSE, lambda = grid,
-alpha=0)
-
-lambda = cv$lambda.min
-```
 
 ## Ridge: Continued
 
 - Find mean squared error of the best model with this value of lambda on the test set
 
 ```
+grid <- grid <- 10^(seq(10, -2, length = 100))
+cv <- cv.glmnet(trainX, trainY, intercept = FALSE, standardize = FALSE, 
+lambda = grid, alpha=0)
+lambda = cv$lambda.min
+
 predictedY <- predict(cv, newx = testX, s = "lambda.min")
 ssq <- sum((predictedY - testY)^2)
 mse = ssq/nrow(testX)
 ```
-
 - Using that value of lambda, refit the model on the whole dataset to find the official coefficients
 
 ```
-fcv <- glmnet(dataX, dataY, intercept = FALSE, standardize = FALSE, lambda = lambda,
-alpha=0)
-coeff <- coef(fcv)
+fcv <- glmnet(dataX, dataY, intercept = FALSE, standardize = FALSE, 
+lambda = lambda,alpha=0)
 ```
 
 ## Lasso
 
-- Similar to Ridge, first perform cross validation to find best value of lambda
+<div class="columns-2">
+  <img src="../images/Lasso_MSE.png" alt="Lasso MSE" height="400" width="400">
 
+  - Similar to Ridge, first perform cross validation to find best value of lambda
+  
+  - Smallest value selected again
+  
+</div>
+
+## Lasso Continued
 ```
 cv_out = cv.glmnet(train_x, train_y, alpha=1, intercept=FALSE, standardize=FALSE,
 lambda=grid)
 lasso_lambda = cv_out$lambda.min
 ```
-
 - Find the mse, then refit the model to find the official coefficients
 
 ```
@@ -132,38 +150,41 @@ lasso_coeff = predict(lasso_out,type="coefficients",s=lasso_lambda)[2:12,]
 
 ## Principal Components
 
-- Use `pls` R package
-- Peform 10-fold cross-validation on the training set 
-- Find the number of components which yields the lowest mse
-- Apply the model to the whole dataset with the number of components, and find the official coefficients
+<div class="columns-2">
+  <img src="../images/pcr_validationplot.png" alt="pcr components plot" height="400" width="400">
+  
+  
+  - Use `pls` R package
+  
+  - Peform 10-fold cross-validation on training set to find optimal number of components (12)
+  
+  - Fit model on full dataset to get final coefficients
+
+</div>
 
 ```
 pcr_model <- pcr(Balance ~ ., data=training, validation = "CV")
-test_mses <- c(rep(0, 12))
-for (i in 1:12) {
-  pcr_pred <- predict(pcr_model, test, ncomp = i)
-  test_mses[i] = mean((pcr_pred - testY)^2)
-}
-which.min(test_mses)
+pcr_comp = which.min(pcr_model$validation$PRESS)
 full_pcr_model <- pcr(Balance ~ ., data=data)
-best_coefs <- full_pcr_model$coefficients[, , 12][-1]
+best_coefs <- full_pcr_model$coefficients[, , pcr_comp][-1]
 ```
 
+
 ## Partial Least Squares
+<div class="columns-2">
+  <img src="../images/plsr_validationplot.png" alt="pcr components plot" height="400" width="400">
 
-- Similar to Principal Components, use `pls` package
-- Perform 10-fold cross validation to find the best number of components
-- Fit the model with this number of components to the whole dataset and find the coefficients
+  - Use `pls` package again
 
+  - Perform 10-fold cross validation to find the best number of components (6)
+  
+  - Fit the model with this number of components to the whole dataset and find the coefficients
+</div>
 ```
 pls_fit = plsr(Balance ~ ., data=training_data,scale=TRUE, validation="CV")
 pls_comp = which.min(pls_fit$validation$PRESS)
-
 pls_pred = predict(pls_fit, test_x, ncomp=pls_comp)
 pls_mse = mean((pls_pred-test_y)^2)
-
-pls_out = plsr(Balance ~ ., data=scaled_data ,scale=TRUE,ncomp=pls_comp)
-pls_coeff = pls_out$coefficients[, , pls_comp]
 ```
 
 # Comparison of All Models
@@ -181,7 +202,7 @@ pander(mse_table, caption="MSE for Different Models")
 
 ```
 
-- We can see that ols and pls have the lowest mean squared errors, and would therefore be the best models for predicting Balance
+- We can see that all of the mses are fairly close together, with ridge producing the lowest mse by a small amount.
 
 # Thanks!
 
