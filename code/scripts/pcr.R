@@ -32,12 +32,12 @@ best_coefs <- pcr_model$coefficients[133:144]
 
 data <- read.csv("data/datasets/scaled_credit.csv")
 full_pcr_model <- pcr(Balance ~ ., data=data)
-best_coefs <- full_pcr_model$coefficients[, , 12][-1]
+best_coefs <- full_pcr_model$coefficients[, , 11][-1]
 
 sink("data/pcr.txt")
 pander(best_coefs)
 writeLines("\nTest MSE:\n")
-test_mses[12]
+test_mses[11]
 sink()
 
 

@@ -26,7 +26,7 @@ dev.off()
 # Calcuate Test MSE
 predictedY <- predict(cv, newx = testX, s = "lambda.min")
 ssq <- sum((predictedY - testY)^2)
-mse = ssq/nrow(testX)
+ridge_mse = ssq/nrow(testX)
 
 
 # Calculate Final Coefficients
@@ -37,10 +37,11 @@ dataY <- data[, 13]
 dataY <- as.vector(dataY)
 dataY <- as.numeric(unlist(dataY))
 fcv <- glmnet(dataX, dataY, intercept = FALSE, standardize = FALSE, lambda = lambda, alpha=0)
+ridge_coeff <- coef(fcv)
 sink("data/Ridge.txt")
 pander(as.matrix(coef(fcv)))
 writeLines("\nTest MSE:\n")
-mse
+ridge_mse
 writeLines("\nBest Lambda:\n")
 lambda
 sink()

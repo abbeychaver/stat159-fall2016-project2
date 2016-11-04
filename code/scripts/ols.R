@@ -16,7 +16,7 @@ testY <- as.vector(testY)
 ols = lm(Balance~Income+Limit+Rating+Cards+Age+Education+GenderFemale+StudentYes+MarriedYes+EthnicityAsian+EthnicityCaucasian, data=scaled_data)
 ols_coeff = ols$coefficients[-1]
 
-preds <- predict(ols, newx =testX)
+preds <- predict(ols, test)
 ols_mse = mean((preds - testY)^2)
 
 # Save coefficients and mse to txt file
