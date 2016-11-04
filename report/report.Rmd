@@ -127,7 +127,7 @@ We look at the correlation matrix of the quantitative variables to get a visual 
 
 ![](../images/correlation_scatterplot.png)
 
-```{r=FALSE}
+```{r=FALSE, echo=FALSE}
 load("../data/eda.Rdata")
 pander(cor(quant_data))
 ```
@@ -176,7 +176,7 @@ knitr::include_graphics("../images/Conditional_Boxplot_Balance_Student.png")
 
 ```{r, echo=FALSE}
 student <- read.csv("../data/summaries/Freq_Summary_Student.csv", header = TRUE, row.names = 1, sep=",")
-colnames(ethnicity) <-c("Student", "Frequency")
+colnames(student) <-c("Student", "Frequency")
 pander(student)
 ```
 
@@ -203,23 +203,31 @@ pander(married)
 pander(summary(aov_qualitative))
 ```
 
+*Only Student produces a significant F statistic - the other categorical variables do not have a strong relationship with Balance.*
+
 *****
 
 Overall, we get the sense that `Income`, `Rating`, `Limit`, and `Student` will be particularly useful predictors for `Balance`.
 
+### Data Processing
+Since we are building regression models in this project, we need to convert all of our categorical variables to quantitative ones. We do this by creating new binary variables, or dummy variables. 
+Additionally, we need to mean-center and standardize all the variables so that they all have comparable scales, as dimension reduction methods can be greatly thrown off by predictors with wildly different scales.
+
 # Methods
 
-For each of the quantitative variables in the Credit.csv dataset, we will look at a summary of their distributions, which includes maximum, minimum, range, median, 1st and 3rd quartiles, IQR, mean, and standard deviation, as well as histograms and boxplots.
+In this project, we attempt to create an accurate predictive model for `Balance` given our predictors using regression methods. We will evaluate 5 methods: ordinary least squares on the data to serve as our benchmark regression model. In addition, we will also perform two shrinkage methods - ridge regression and lasso regression -  and two dimension reduction methods - principal components regression and partial least squares regression. These last four methods are all variations on least squares regression which attempt to mitigate particular weaknesses of ordinary least squares.
 
-For the qualitative variables, we will create both frequency and relative frequency tables, as well as barcharts of these tables. 
+Generally, predictive models wrestle with what is known as the *bias-variance tradeoff*. When we fit a model to data, we want the model to be as close as possible to the actual underlying distribution. For a linear model, we use the assmuption of linearly related variables and a normally distributed error term centered at zero. Under this model, we can show that least squares estimates of our variable coefficients are *unbiased*: that given infinite samples, we will find the true coefficient. But in reality, we rarely have unlimited samples, and a result of this is that ordinary least squares regression has high *variance*: estimates vary quite a bit based on the training data. The result is *overfitting*, when the model is too specific to the training data, and fails to provide accurate predictions when given new data.
 
-To look at the association between balance and each of the variables, we will also create a matrix of correlations for all the quantitative variables, perform ANOVA tests between balance and all the qualitative variables, and also create conditional boxplots between balance and the qualitative variables. 
+### Regularization
+Regularization methods attempt to reduce variance by "shrinking" coefficients towards zero, which they do by adding a function of the coefficients to the sum or squared residuals typically minimized in least squares regression. The difference between lasso and ridge regression is simply the function - lasso uses the l1 norm (the sum of the absolute value of the coefficients), while ridge regression uses the l2 norm (the sum of the square of the coefficients). The result of this difference is that lasso often sets coefficients to zero and thus functions as a method of subset selection on the predictors, for reasons beyond the scope of this paper. From our original data exploration, we saw that many of the predictors had weak relationships with `Balance`, and are likely to not provide any valuable information for our prediction. Eliminating them from the model by setting their coefficients to zero may decrease our risk of overfitting, so we may hypothesize that lasso will perform particularly well.
 
-Before fitting regression models, we will dummy out the categorical variables, and then mean-center and standardize all the variables so that they all have comparable scales. We will also take a random sample of size 300 from the Credit.csv dataset to be our training set, and the remaining 100 observations will serve as our test set. 
+### Dimension Reduction 
+Dimesion reduction models take an alternative approach: rather than fitting a model with the original predictors, we create new predictors from linear combinations of the original predictors. Typically, we end up fitting a model with fewer variables than we had originally, which reduces the dimension of the predictor space. This is valuable because in high-dimensional spaces, "distance" as measured by residuals becomes larger and less useful. Another benefit is that when multiple predictors have a strong relationship with each other, we can combine them into a single variable, and reduce the problems created by multicollinearity. As we saw, many of our quantitative variables were highly correlated, so these methods are particularly valuable. The two methods we use are Principal Components and Partial Least Squares, which use similar methods to create these linear combinations of original predictors. Neither clearly dominates the other, so we will evaluate both.
 
-We will perform ordinary least squares on the data to serve as our benchmark regression model. In addition, we will also perform two shrinkage methods - ridge regression and lasso regression -  and two dimension reduction methods - principal components regression and partial least squares regression. 
 
-Finally we will compare the mean squared errors (mse) that result from using each of these regression models to determine the model that results in the lowest mse. 
+### Model Validation
+Our ultimate goal is to build an accurate predictive model, so it is critical that we choose the model which will produce the lowest error on new data. To estimate our error statistic, mean squared error, on the different models, we will reserve a portion of our data as a validation set. We will train our models on the majority of the data, and then calculate mse on the data which was not used to fit the data. This will help us select the model with the lowest bias (closest to the true distribution) that is not overfit on the training data.
 
 # Analysis
 
