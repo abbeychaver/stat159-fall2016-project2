@@ -1,14 +1,37 @@
 # Analysis
 
-To look at the distributions of all the variables, we created functions in   `code/functions/data_functions.R`, `descr_stats()` for quantitative variables and `qual_descr()` for quantitative variables to create summaries of the variables, as well as any relevant plots such as histograms, boxplots, barplots, and conditional boxplots. To perform the ANOVA tests, we used the `aov()` function. 
+```{r include=FALSE}
+library(pander)
+library(ggplot2)
+load("../data/results.Rdata")
+```
 
-To prepare the data through processing, we "dummified" the factors using the function `model.matrix()`. We also mean-centered and standardized all the variables using the `scale()` function. 
+### Ordinary Least Squares
 
-For the ordinary least squares regression model, we used the `lm()` function and retrieved the coefficients by calling `$coefficients` on the output. We calculated the mse of the model by calling `$residuals` on the lm output, squaring the residuals, and finding the mean of the result. 
+For the ordinary least squares regression model, we used the `lm()` function to fit an additive model with all predictors on the training data. We estimated the test mse on the validation set for comparison to the other models, then refit the model on the full data set
 
-For the shrinkage methods, we used the package `glmnet`. The function `cv.glmnet()` was used to perform cross-validation, and the best value of lambda was found by calling `$lambda.min` on the output. Using this value of lambda, we are able to use the test data set and find the mse by using the function `predict()`, and finding the mean of the squared differences between the predicted outputs and the actual test outputs. We also called the `glmnet()` function to fit the model on the full data set, and used `predict()` again to find the official model coefficients. 
+### Lasso and Ridge Regression
+For the shrinkage methods, we used the package `glmnet`. As mentioned in the Methods section,  these methods work by adding either the l1 or l2 norm of the coefficients to the residuals being minimized. The specific function is controlled by a tuning parameter, $\Lambda$. A higher $\Lambda$ produces smaller coefficients. In order to select the coeffient that strikes the best balance between bias and variance, we perform 10-fold cross validation with the function `cv.glmnet()`. We tried a wide variety of lambda values, and both ridge regression and lasso selected the smallest value, 0.01, as the best.
 
-For the dimension reduction methods, we used the package `pls`. The functions `pcr()` and `plsr()` were used depending on which regression model we were fitting, with the argument `validation = "CV"` to perform 10-fold cross-validation. We call $validation$PRESS on the output of this function and then find the number of components that yields the lowest mse. To plot the cross-validation errors, we used the `validationPlot()` function. Similar to above, we find the mse by using the `predict()` function, and refit the model using the full data set with the functions `pcr()` or `plsr()` to find the official model coefficients. 
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("../images/Lasso_MSE.png")
+knitr::include_graphics("../images/Ridge_MSE.png")
+```
 
-To generate the final plots in the results, the `ggplot2` package was used. To format the summary tables, the `pander` package was used. 
+*We can see that both methods get the smallest cross-validated MSE at small values of $\Lambda$*
+
+Using this value of lambda, we tried our best model on the test data set to find the test mse by using the function `predict()`, and finding the mean of the squared differences between the predicted outputs and the actual test outputs. We also called the `glmnet()` function to fit the model on the full data set, and used `predict()` again to find the official model coefficients. 
+
+
+### Principal Components Analysis and Partial Least Squares
+For the dimension reduction methods, we used the package `pls`. The functions `pcr()` and `plsr()` were used depending on which regression model we were fitting, with the argument `validation = "CV"` to perform 10-fold cross-validation. In these methods, model selection is based on how many *components* are included in the final model, where each component is a linear combination of the original predictors. We call $validation$PRESS on the output of this function and then find the number of components that yields the lowest mse. For PCR, we selected the full model, but for PLSR, we actually fit a model with only 6 components.
+
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("../images/pcr_validationplot.png")
+knitr::include_graphics("../images/plsr_validationplot.png")
+```
+
+*Interestingly, PLSR flattens out much more quickly than PCR.*
+
+As with the other models, we estimate the test mse by using the `predict()` function, and refit the model using the full data set with the functions `pcr()` or `plsr()` to find the official model coefficients. 
 

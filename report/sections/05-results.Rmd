@@ -32,7 +32,7 @@ Another plot of these coefficients is given in Figure 2, which has separate plot
 pander(mse_table, caption="MSE for Different Models")
 ```
 
-Now looking at Table 4, we can see the mean squared errors for our models, and that the lowest mean squared error for the regression alternatives (not the ordinary least squares model) is for the partial least squares model, with a value of `r I(mse_table[3])`. However, the test mses are all extremely close together, and it's hard to say whether this model is truly significantly better than the other. The ordinary least squares model actually performed the best with an mse of `r I(mse_table[1])`, and we can see that the plsr model was closest to the ols model in terms of coefficients. 
+Now looking at Table 4, we can see the mean squared errors for our models applied to the test data, and that the lowest mean squared error for the regression alternatives (not the ordinary least squares model) is for the ridge regression model, with a value of `r I(mse_table[2])`. However, the test mses are all extremely close together, and it's hard to say whether this model is truly significantly better than the other. The ordinary least squares model actually performed fairly well with an mse of `r I(mse_table[1])`, and we can see that the plsr model produced almost the exact same outcome in both mse and coefficients. 
 
 
 

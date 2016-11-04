@@ -7,5 +7,5 @@ output: pdf_document
 
 # Abstract
 
-In this report, we will be examining the variables in the Credit.csv dataset from _An Introduction to Statistical Learning_ by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani. We will also be building different regression models in order to determine how to best predict Balance given ten predictors, using similar approaches as in Chapter 6. 
+In this report, we examine the variables in the Credit.csv dataset from _An Introduction to Statistical Learning_ by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani. We evaluate five different regression models using a validation set from the original data. We evaluate ordinary least squares against regularization methods Lasso and Ridge Regression, and dimension reduction methods Principal Components Regression and Partial Least Squares Regression. We ultimately find that all five methods produce similar test mses, with Ridge Regression narrowly producing the best result.
 

@@ -18,7 +18,7 @@ balance <- read.csv("../data/summaries/Summary_Balance.csv", header = TRUE, row.
 pander(balance)
 ```
 
-*The average balance falls at about \$500,000, with a long tail.A fairly unusual distribution - a huge portion of accounts have balances below \$200,000.*
+*The average balance falls at about \$500,000, with a long tail. This is not a classical distribution - a huge portion of accounts have balances below \$200,000, but this is not surprising from a common sense perspective.*
 
 Now we look at our predictors, with an initial visual exploration of the quantitative variables. 
 
@@ -48,7 +48,7 @@ cards <- read.csv("../data/summaries/Summary_Cards.csv", header = TRUE, row.name
 pander(cards)
 ```
 
-*The average account holder has around 3 cards. Cards look more exponentially distributed.*
+*The average account holder has around 3 cards, but cards look more exponentially distributed - many people have only one or two.*
 
 ### Years of Education
 
@@ -76,7 +76,7 @@ income <- read.csv("../data/summaries/Summary_Income.csv", header = TRUE, row.na
 pander(income)
 ```
 
-*The mean seems to be around \$30,000 a year. Incomes skew right in this data set.*
+*Incomes skew heavily right in this data set - there is a large difference between the mean income, \$45,00, and the median, \$30,000*
 
 ### Credit Limit
 
@@ -90,7 +90,7 @@ limit <- read.csv("../data/summaries/Summary_Limit.csv", header = TRUE, row.name
 pander(limit)
 ```
 
-*The average credit limit is around \$5000, with a long tail. Credit limits are distributed normal with a right skew.*
+*The average credit limit is around \$5000, with a long tail. Credit limits are somewhat normal with a right skew.*
 
 ### Credit Rating
 
@@ -188,7 +188,7 @@ pander(married)
 pander(summary(aov_qualitative))
 ```
 
-*Only Student produces a significant F statistic - the other categorical variables do not have a strong relationship with Balance.*
+*Only `Student` produces a significant F-statistic. The other categorical variables do not have a strong relationship with Balance.*
 
 *****
 

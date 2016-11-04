@@ -19,25 +19,21 @@ png("images/pcr_validationplot.png")
 validationplot(pcr_model, val.type = "MSEP")
 dev.off()
 
-test_mses <- c(rep(0, 12))
-for (i in 1:12) {
-  pcr_pred <- predict(pcr_model, test, ncomp = i)
-  test_mses[i] = mean((pcr_pred - testY)^2)
-}
-which.min(test_mses)
+pcr_comp = which.min(pcr_model$validation$PRESS)
 
 # Best Model is the model with all 12 components (on both training and test)
-best_coefs <- pcr_model$coefficients[133:144]
+pcr_pred = predict(pcr_model, test, ncomp=pcr_comp)
+pcr_mse = mean((pcr_pred-testY)^2)
 
 
 data <- read.csv("data/datasets/scaled_credit.csv")
 full_pcr_model <- pcr(Balance ~ ., data=data)
-best_coefs <- full_pcr_model$coefficients[, , 11][-1]
+best_coefs <- full_pcr_model$coefficients[, , 12][-1]
 
 sink("data/pcr.txt")
 pander(best_coefs)
 writeLines("\nTest MSE:\n")
-test_mses[11]
+pcr_mse
 sink()
 
 

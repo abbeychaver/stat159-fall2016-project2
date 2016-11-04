@@ -20,8 +20,8 @@ validationplot(pls_fit, val.type="MSEP")
 dev.off()
 
 # Find the test mse
-pls_pred = predict(pls_fit, test_x, ncomp=pls_comp)
-pls_mse = mean((pls_pred-test_y)^2)
+pls_preds = predict(pls_fit, test_x, ncomp=pls_comp)
+pls_mse = mean((pls_preds -test_y)^2)
 
 # Find the coefficients for the best value of the number of components
 pls_out = plsr(Balance ~ ., data=scaled_data ,scale=TRUE,ncomp=pls_comp)

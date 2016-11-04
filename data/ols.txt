@@ -17,4 +17,4 @@ Table: Table continues below
 
 Test MSE:
 
-[1] 0.0471882
+[1] 0.04860762

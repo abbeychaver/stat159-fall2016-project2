@@ -7,7 +7,7 @@ output: pdf_document
 
 # Abstract
 
-In this report, we will be examining the variables in the Credit.csv dataset from _An Introduction to Statistical Learning_ by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani. We will also be building different regression models in order to determine how to best predict Balance given ten predictors, using similar approaches as in Chapter 6. 
+In this report, we examine the variables in the Credit.csv dataset from _An Introduction to Statistical Learning_ by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani. We evaluate five different regression models using a validation set from the original data. We evaluate ordinary least squares against regularization methods Lasso and Ridge Regression, and dimension reduction methods Principal Components Regression and Partial Least Squares Regression. We ultimately find that all five methods produce similar test mses, with Ridge Regression narrowly producing the best result.
 
 # Introduction
 
@@ -33,7 +33,7 @@ balance <- read.csv("../data/summaries/Summary_Balance.csv", header = TRUE, row.
 pander(balance)
 ```
 
-*The average balance falls at about \$500,000, with a long tail.A fairly unusual distribution - a huge portion of accounts have balances below \$200,000.*
+*The average balance falls at about \$500,000, with a long tail. This is not a classical distribution - a huge portion of accounts have balances below \$200,000, but this is not surprising from a common sense perspective.*
 
 Now we look at our predictors, with an initial visual exploration of the quantitative variables. 
 
@@ -63,7 +63,7 @@ cards <- read.csv("../data/summaries/Summary_Cards.csv", header = TRUE, row.name
 pander(cards)
 ```
 
-*The average account holder has around 3 cards. Cards look more exponentially distributed.*
+*The average account holder has around 3 cards, but cards look more exponentially distributed - many people have only one or two.*
 
 ### Years of Education
 
@@ -91,7 +91,7 @@ income <- read.csv("../data/summaries/Summary_Income.csv", header = TRUE, row.na
 pander(income)
 ```
 
-*The mean seems to be around \$30,000 a year. Incomes skew right in this data set.*
+*Incomes skew heavily right in this data set - there is a large difference between the mean income, \$45,00, and the median, \$30,000*
 
 ### Credit Limit
 
@@ -105,7 +105,7 @@ limit <- read.csv("../data/summaries/Summary_Limit.csv", header = TRUE, row.name
 pander(limit)
 ```
 
-*The average credit limit is around \$5000, with a long tail. Credit limits are distributed normal with a right skew.*
+*The average credit limit is around \$5000, with a long tail. Credit limits are somewhat normal with a right skew.*
 
 ### Credit Rating
 
@@ -203,7 +203,7 @@ pander(married)
 pander(summary(aov_qualitative))
 ```
 
-*Only Student produces a significant F statistic - the other categorical variables do not have a strong relationship with Balance.*
+*Only `Student` produces a significant F-statistic. The other categorical variables do not have a strong relationship with Balance.*
 
 *****
 
@@ -231,17 +231,40 @@ Our ultimate goal is to build an accurate predictive model, so it is critical th
 
 # Analysis
 
-To look at the distributions of all the variables, we created functions in   `code/functions/data_functions.R`, `descr_stats()` for quantitative variables and `qual_descr()` for quantitative variables to create summaries of the variables, as well as any relevant plots such as histograms, boxplots, barplots, and conditional boxplots. To perform the ANOVA tests, we used the `aov()` function. 
+```{r include=FALSE}
+library(pander)
+library(ggplot2)
+load("../data/results.Rdata")
+```
 
-To prepare the data through processing, we "dummified" the factors using the function `model.matrix()`. We also mean-centered and standardized all the variables using the `scale()` function. 
+### Ordinary Least Squares
 
-For the ordinary least squares regression model, we used the `lm()` function and retrieved the coefficients by calling `$coefficients` on the output. We calculated the mse of the model by calling `$residuals` on the lm output, squaring the residuals, and finding the mean of the result. 
+For the ordinary least squares regression model, we used the `lm()` function to fit an additive model with all predictors on the training data. We estimated the test mse on the validation set for comparison to the other models, then refit the model on the full data set
 
-For the shrinkage methods, we used the package `glmnet`. The function `cv.glmnet()` was used to perform cross-validation, and the best value of lambda was found by calling `$lambda.min` on the output. Using this value of lambda, we are able to use the test data set and find the mse by using the function `predict()`, and finding the mean of the squared differences between the predicted outputs and the actual test outputs. We also called the `glmnet()` function to fit the model on the full data set, and used `predict()` again to find the official model coefficients. 
+### Lasso and Ridge Regression
+For the shrinkage methods, we used the package `glmnet`. As mentioned in the Methods section,  these methods work by adding either the l1 or l2 norm of the coefficients to the residuals being minimized. The specific function is controlled by a tuning parameter, $\Lambda$. A higher $\Lambda$ produces smaller coefficients. In order to select the coeffient that strikes the best balance between bias and variance, we perform 10-fold cross validation with the function `cv.glmnet()`. We tried a wide variety of lambda values, and both ridge regression and lasso selected the smallest value, 0.01, as the best.
 
-For the dimension reduction methods, we used the package `pls`. The functions `pcr()` and `plsr()` were used depending on which regression model we were fitting, with the argument `validation = "CV"` to perform 10-fold cross-validation. We call $validation$PRESS on the output of this function and then find the number of components that yields the lowest mse. To plot the cross-validation errors, we used the `validationPlot()` function. Similar to above, we find the mse by using the `predict()` function, and refit the model using the full data set with the functions `pcr()` or `plsr()` to find the official model coefficients. 
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("../images/Lasso_MSE.png")
+knitr::include_graphics("../images/Ridge_MSE.png")
+```
 
-To generate the final plots in the results, the `ggplot2` package was used. To format the summary tables, the `pander` package was used. 
+*We can see that both methods get the smallest cross-validated MSE at small values of $\Lambda$*
+
+Using this value of lambda, we tried our best model on the test data set to find the test mse by using the function `predict()`, and finding the mean of the squared differences between the predicted outputs and the actual test outputs. We also called the `glmnet()` function to fit the model on the full data set, and used `predict()` again to find the official model coefficients. 
+
+
+### Principal Components Analysis and Partial Least Squares
+For the dimension reduction methods, we used the package `pls`. The functions `pcr()` and `plsr()` were used depending on which regression model we were fitting, with the argument `validation = "CV"` to perform 10-fold cross-validation. In these methods, model selection is based on how many *components* are included in the final model, where each component is a linear combination of the original predictors. We call $validation$PRESS on the output of this function and then find the number of components that yields the lowest mse. For PCR, we selected the full model, but for PLSR, we actually fit a model with only 6 components.
+
+```{r, out.width = "200px", echo=FALSE}
+knitr::include_graphics("../images/pcr_validationplot.png")
+knitr::include_graphics("../images/plsr_validationplot.png")
+```
+
+*Interestingly, PLSR flattens out much more quickly than PCR.*
+
+As with the other models, we estimate the test mse by using the `predict()` function, and refit the model using the full data set with the functions `pcr()` or `plsr()` to find the official model coefficients. 
 
 ---
 output: pdf_document
@@ -277,12 +300,11 @@ Another plot of these coefficients is given in Figure 2, which has separate plot
 pander(mse_table, caption="MSE for Different Models")
 ```
 
-Now looking at Table 4, we can see the mean squared errors for our models, and that the lowest mean squared error for the regression alternatives (not the ordinary least squares model) is for the partial least squares model, with a value of `r I(mse_table[3])`. However, the test mses are all extremely close together, and it's hard to say whether this model is truly significantly better than the other. The ordinary least squares model actually performed the best with an mse of `r I(mse_table[1])`, and we can see that the plsr model was closest to the ols model in terms of coefficients. 
+Now looking at Table 4, we can see the mean squared errors for our models applied to the test data, and that the lowest mean squared error for the regression alternatives (not the ordinary least squares model) is for the ridge regression model, with a value of `r I(mse_table[2])`. However, the test mses are all extremely close together, and it's hard to say whether this model is truly significantly better than the other. The ordinary least squares model actually performed fairly well with an mse of `r I(mse_table[1])`, and we can see that the plsr model produced almost the exact same outcome in both mse and coefficients. 
 
 
 
 
 # Conclusions
 
-In this project, we have built five different regression models to predict Balance based on ten predictors from the dataset Credit.csv. Based on our results, we see that the ordinary least squares regression model yields the lowest mean squared error overall, and the partial least squares regression model yields the lowest mean squared error of the alternative regression models. Therefore we conclude that the ordinary least squares model is the most accurate predictor for Balance based on the ten predictors. 
-
+In this project, we have built five different regression models to predict Balance based on ten predictors from the dataset Credit.csv. Based on our results, we found that ridge regression produced the lowest mean squared error when applied to the test data set. However, we found that the mses were very closely clustered between the five models, and it's difficult to say whether ridge regression is truly optimal for this problem. This result is somewhat surprising: because the data had highly collinear predictors and many uncorrelated predictors, we predicted that a dimension reduction technique would be more useful, or that lasso would outperform ridge regression by eliminating some of the variables from the model. Ultimately, this was not the case.

@@ -13,11 +13,15 @@ testY <- test[, 13]
 testY <- as.vector(testY)
 
 # ordinary least squares regression
-ols = lm(Balance~Income+Limit+Rating+Cards+Age+Education+GenderFemale+StudentYes+MarriedYes+EthnicityAsian+EthnicityCaucasian, data=scaled_data)
+ols = lm(Balance~Income+Limit+Rating+Cards+Age+Education+GenderFemale+StudentYes+MarriedYes+EthnicityAsian+EthnicityCaucasian, data=training)
 ols_coeff = ols$coefficients[-1]
 
 preds <- predict(ols, test)
 ols_mse = mean((preds - testY)^2)
+
+#fit on full data set
+ols_final = lm(Balance~Income+Limit+Rating+Cards+Age+Education+GenderFemale+StudentYes+MarriedYes+EthnicityAsian+EthnicityCaucasian, data=scaled_data)
+ols_coeff = ols_final$coefficients[-1]
 
 # Save coefficients and mse to txt file
 sink("data/ols.txt")
